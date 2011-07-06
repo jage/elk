@@ -14,7 +14,7 @@ module Elk
       parameters = {}.merge(parameters)
       url = base_url + path
 
-      RestClient.get(url, parameters, {:accept => :json})
+      RestClient.get(url, {:accept => :json})
     end
 
     def post(path, parameters = {})

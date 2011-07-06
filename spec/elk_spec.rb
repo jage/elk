@@ -23,6 +23,24 @@ describe Elk do
       number.status.should == :active
       number.sms_url.should == 'http://localhost/receive'
       number.country.should == 'se'
+      number.number.should == '+46766861012'
+    end
+
+    it 'gets allocated numbers' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('gets_allocated_numbers.txt'))
+
+      elk = Elk::Account.new(:username => 'USERNAME', :password => 'PASSWORD')
+      numbers = Elk::Number.numbers(:account => elk)
+      numbers.size.should == 2
+      numbers[0].number_id.should == 'nea19c8e291676fb7003fa1d63bba7899'
+      numbers[0].number.should == '+46704508449'
+      numbers[0].sms_url == 'http://localhost/receive1'
+
+      numbers[1].number_id.should == 'nea19c8e291676fb7003fa1d63bba789A'
+      numbers[1].number.should == '+46761042247'
+      numbers[0].sms_url == 'http://localhost/receive2'
     end
   end
 
