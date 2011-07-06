@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx/0.7.67
+Date: Wed, 06 Jul 2011 18:50:11 GMT
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 167
+
+{"country": "se", "number": "+46766861012", "capabilities": ["sms"], "active": "yes", "sms_url": "http://localhost/receive", "id": "n415f0b3b3d812ab5fb333c7ef605f329"}

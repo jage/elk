@@ -1,0 +1,38 @@
+PATH
+  remote: .
+  specs:
+    elk (0.0.1)
+      json_pure (~> 1.5.2)
+      rest-client (~> 1.6.3)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.2.6)
+    crack (0.1.8)
+    diff-lcs (1.1.2)
+    json_pure (1.5.3)
+    mime-types (1.16)
+    rake (0.9.2)
+    rest-client (1.6.3)
+      mime-types (>= 1.16)
+    rspec (2.6.0)
+      rspec-core (~> 2.6.0)
+      rspec-expectations (~> 2.6.0)
+      rspec-mocks (~> 2.6.0)
+    rspec-core (2.6.4)
+    rspec-expectations (2.6.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.6.0)
+    webmock (1.6.4)
+      addressable (> 2.2.5, ~> 2.2)
+      crack (>= 0.1.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  elk!
+  rake (~> 0.9.2)
+  rspec (~> 2.6.0)
+  webmock (~> 1.6.4)

@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+Server: nginx/0.7.67
+Date: Wed, 06 Jul 2011 18:48:32 GMT
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 181 # WRONG!!!!!!!!!!!!!!!
+
+CHANGE NUMBER AND ID!
+
+{"numbers": [{"country": "se", "number": "+46766861024", "capabilities": ["sms"], "active": "yes", "sms_url": "http://localhost/receive", "id": "nea19c8e291676fb7003fa1d63bba7855"}]}
