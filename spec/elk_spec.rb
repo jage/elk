@@ -124,7 +124,7 @@ describe Elk do
 
       sms_history.size.should == 3
       sms_history[0].class.should == Elk::SMS
-      sms_history[0].created_at.class.should == DateTime
+      sms_history[0].created_at.class.should == Time
 
       sms_history[0].message.should == "Your order #171 has now been sent!"
       sms_history[1].message.should == "I'd like to order a pair of elks!"

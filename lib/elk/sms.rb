@@ -11,7 +11,7 @@ module Elk
       @to = parameters[:to]
       @message = parameters[:message]
       @message_id = parameters[:id]
-      @created_at = DateTime.parse(parameters[:created]).to_date
+      @created_at = DateTime.parse(parameters[:created]).to_time
       @loaded_at = Time.now
     end
 
