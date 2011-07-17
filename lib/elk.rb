@@ -13,6 +13,7 @@ module Elk
   VERSION = '0.0.2'
 
   class AuthError < RuntimeError; end
+  class ServerError < RuntimeError; end
 
   class << self
     attr_accessor :username
@@ -34,6 +35,8 @@ module Elk
       RestClient.get(url, {:accept => :json})
     rescue RestClient::Unauthorized
       raise AuthError, "Authentication failed"
+    rescue RestClient::InternalServerError
+      raise ServerError, "Server error"
     end
 
     def post(path, parameters = {})
@@ -43,6 +46,8 @@ module Elk
       RestClient.post(url, parameters, {:accept => :json})
     rescue RestClient::Unauthorized
       raise AuthError, "Authentication failed"
+    rescue RestClient::InternalServerError
+      raise ServerError, "Server error"
     end
   end
 end

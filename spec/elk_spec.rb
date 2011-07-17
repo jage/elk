@@ -107,6 +107,18 @@ describe Elk do
         Elk::Number.all
       }.to raise_error(Elk::AuthError)
     end
+
+    it 'gets server error when looking for all numbers' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('server_error.txt'))
+
+      configure_elk
+
+      expect {
+        Elk::Number.all
+      }.to raise_error(Elk::ServerError)
+    end
   end
 
   describe Elk::SMS do
