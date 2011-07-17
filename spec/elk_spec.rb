@@ -5,7 +5,7 @@ describe Elk do
   describe Elk::Number do
     it 'allocates a number' do
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
-        with(:body => "sms_url=http%3A%2F%2Flocalhost%2Freceive&country=se",
+        with(:body => {"country" => "se", "sms_url" => "http://localhost/receive"},
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('allocates_a_number.txt'))
 
@@ -42,7 +42,7 @@ describe Elk do
         with(:headers => {'Accept'=>'application/json'}).
         to_return(fixture('gets_allocated_numbers.txt'))
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
-        with(:body => "country=no&sms_url=http%3A%2F%2Fotherhost%2Freceive",
+        with(:body => {"country" => "no", "sms_url" => "http://otherhost/receive"},
         :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('updates_a_number.txt'))
 
@@ -61,7 +61,7 @@ describe Elk do
         with(:headers => {'Accept'=>'application/json'}).
         to_return(fixture('gets_allocated_numbers.txt'))
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
-        with(:body => "active=no",
+        with(:body => {"active" => "no"},
         :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('deallocates_a_number.txt'))
 
@@ -97,7 +97,7 @@ describe Elk do
   describe Elk::SMS do
     it 'sends a SMS' do
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
-        with(:body => "from=%2B46761042247&to=%2B46704508449&message=Your%20order%20%23171%20has%20now%20been%20sent!",
+        with(:body => {"from" => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449"},
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('sends_a_sms.txt'))
 
