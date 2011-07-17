@@ -4,6 +4,10 @@ module Elk
     attr_accessor :country, :sms_url
 
     def initialize(parameters)
+      set_paramaters(parameters)
+    end
+    
+    def set_paramaters(parameters)
       @country = parameters[:country]
       @sms_url = parameters[:sms_url]
       @status  = parameters[:active]
@@ -21,6 +25,12 @@ module Elk
       else
         nil
       end
+    end
+
+    def reload
+      response = Elk.get("/Numbers/#{self.number_id}")
+
+      self.set_paramaters(JSON.parse(response.body, :symbolize_names => true))
     end
 
     def save

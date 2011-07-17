@@ -72,6 +72,25 @@ describe Elk do
       number.deallocate!.should == true
       number.status.should == :deallocated
     end
+
+    it 'reloads a number' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('gets_allocated_numbers.txt'))
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('reloads_a_number.txt'))
+
+
+      configure_elk
+
+      number = Elk::Number.all[0]
+      object_id = number.object_id
+      number.country = 'blah'
+      number.reload
+      number.country.should == 'se'
+      number.object_id.should == object_id
+    end
   end
 
   describe Elk::SMS do
