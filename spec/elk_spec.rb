@@ -121,7 +121,7 @@ describe Elk do
     end
 
     it 'gets garbage numbers' do
-      bad_response_body = File.read(fixture('bad_response_body.txt'))
+      bad_response_body = fixture('bad_response_body.txt').read
 
       expect {
         Elk.parse_json(bad_response_body)
