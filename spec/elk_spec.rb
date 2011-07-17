@@ -55,6 +55,23 @@ describe Elk do
       number.country.should == 'no'
       number.sms_url.should == 'http://otherhost/receive'
     end
+
+    it 'deallocates a number' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('gets_allocated_numbers.txt'))
+      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
+        with(:body => "active=no",
+        :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        to_return(fixture('deallocates_a_number.txt'))
+
+      configure_elk
+
+      number = Elk::Number.all[0]
+      number.status.should == :active
+      number.deallocate!.should == true
+      number.status.should == :deallocated
+    end
   end
 
   describe Elk::SMS do

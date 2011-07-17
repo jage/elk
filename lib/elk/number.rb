@@ -16,6 +16,8 @@ module Elk
       case @status
       when 'yes'
         :active
+      when 'no'
+        :deallocated
       else
         nil
       end
@@ -23,6 +25,14 @@ module Elk
 
     def save
       response = Elk.post("/Numbers/#{self.number_id}", {:country => self.country, :sms_url => self.sms_url})
+
+      response.code == 200
+    end
+
+    def deallocate!
+      response = Elk.post("/Numbers/#{self.number_id}", {:active => 'no'})
+
+      @status = 'no'
 
       response.code == 200
     end
