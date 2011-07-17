@@ -88,5 +88,23 @@ describe Elk do
         :message => 'Your order #171 has now been sent!')
       #sms.status.should == Elk::SMS::Sent
     end
+
+    it 'gets SMS-history' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('sms_history.txt'))
+
+      configure_elk
+
+      sms_history = Elk::SMS.all
+
+      sms_history.size.should == 3
+      sms_history[0].class.should == Elk::SMS
+      sms_history[0].created_at.class.should == DateTime
+
+      sms_history[0].message.should == "Your order #171 has now been sent!"
+      sms_history[1].message.should == "I'd like to order a pair of elks!"
+      sms_history[2].message.should == "Want an elk?"
+    end
   end
 end

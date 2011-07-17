@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx/0.7.67
+Date: Sun, 17 Jul 2011 11:13:02 GMT
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 531
+
+{"smses": [{"to": "+46704508449", "message": "Your order #171 has now been sent!", "from": "+46761042247", "id": "s8952031bb83bf3e64f8e13b071c131c0", "created": "2011-07-17T10:58:57.130000"}, {"to": "+46761042247", "message": "I'd like to order a pair of elks!", "from": "+46704508449", "id": "sf661a8a644b1a8e044e98b9003db5464", "created": "2011-07-05T14:40:08.481000"}, {"to": "+46704508449", "message": "Want an elk?", "from": "+46761042247", "id": "s698228b54946eb0452b66936da37cc66", "created": "2011-07-05T14:06:13.705000"}]}
