@@ -26,6 +26,11 @@ module Elk
         parameters = {}.merge(settings)
         response = Elk.post('/SMS', parameters)
         self.new(Elk.parse_json(response.body))
+      ensure
+        # Warn if the from string will be capped by the sms gateway
+        if parameters[:from].match(/^(\w{11,})$/)
+          warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"
+        end
       end
 
       def all

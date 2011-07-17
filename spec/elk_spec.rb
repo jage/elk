@@ -138,9 +138,18 @@ describe Elk do
 
       configure_elk
 
-      sms = Elk::SMS.send(:from => '+46761042247',
-        :to => '+46704508449',
-        :message => 'Your order #171 has now been sent!')
+      # Fake $stderr to check warnings
+      begin
+        old_stderr, $stderr = $stderr, StringIO.new
+
+        sms = Elk::SMS.send(:from => '+46761042247',
+          :to => '+46704508449',
+          :message => 'Your order #171 has now been sent!')
+
+        $stderr.string.should == ""
+      ensure
+        $stderr = old_stderr
+      end
 
       sms.class.should == Elk::SMS
       sms.from.should == '+46761042247'
@@ -184,5 +193,33 @@ describe Elk do
       sms.object_id.should == object_id
       sms.loaded_at.should_not == loaded_at
     end
+
+    it 'should warn about capped sms sender' do
+      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+        with(:body => {"from" => "VeryVeryVeryVeryLongSenderName", :message => "Your order #171 has now been sent!", :to => "+46704508449"},
+             :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        to_return(fixture('sends_a_sms_with_long_sender.txt'))
+
+      configure_elk
+
+      # Fake $stderr to check warnings
+      begin
+        old_stderr, $stderr = $stderr, StringIO.new
+
+        sms = Elk::SMS.send(:from => 'VeryVeryVeryVeryLongSenderName',
+          :to => '+46704508449',
+          :message => 'Your order #171 has now been sent!')
+
+        $stderr.string.should == "SMS 'from' value VeryVeryVeryVeryLongSenderName will be capped at 11 chars\n"
+      ensure
+        $stderr = old_stderr
+      end
+
+      sms.class.should == Elk::SMS
+      sms.from.should == 'VeryVeryVeryVeryLongSenderName'
+      sms.to.should == '+46704508449'
+      sms.message.should == 'Your order #171 has now been sent!'
+    end
+
   end
 end
