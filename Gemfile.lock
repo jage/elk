@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    elk (0.0.2)
+    elk (0.0.3)
       json_pure (~> 1.5.2)
       rest-client (~> 1.6.3)
 

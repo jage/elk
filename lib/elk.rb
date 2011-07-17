@@ -10,7 +10,7 @@ require 'elk/sms'
 module Elk
   BASE_DOMAIN = 'api.46elks.com'
   API_VERSION = 'a1'
-  VERSION = '0.0.2'
+  VERSION = '0.0.3'
 
   class AuthError < RuntimeError; end
   class ServerError < RuntimeError; end

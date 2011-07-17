@@ -2,7 +2,7 @@ $:.unshift File.expand_path("../lib", __FILE__)
 
 spec = Gem::Specification.new do |s|
   s.name = "elk"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.author = "Johan Eckerstroem"
   s.email = "johan@duh.se"
   s.summary = "Client library for 46elks SMS/MMS/Voice service."
