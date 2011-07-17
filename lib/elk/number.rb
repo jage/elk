@@ -1,6 +1,7 @@
 module Elk
   class Number
-    attr_reader :number_id, :number, :capabilities, :country, :sms_url
+    attr_reader :number_id, :number, :capabilities
+    attr_accessor :country, :sms_url
 
     def initialize(parameters)
       @country = parameters[:country]
@@ -18,6 +19,12 @@ module Elk
       else
         nil
       end
+    end
+
+    def save
+      response = Elk.post("/Numbers/#{self.number_id}", {:country => self.country, :sms_url => self.sms_url})
+
+      response.code == 200
     end
 
     class << self

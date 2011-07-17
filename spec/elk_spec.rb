@@ -36,6 +36,25 @@ describe Elk do
       numbers[1].number.should == '+46761042247'
       numbers[0].sms_url == 'http://localhost/receive2'
     end
+
+    it 'updates a number' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('gets_allocated_numbers.txt'))
+      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
+        with(:body => "country=no&sms_url=http%3A%2F%2Fotherhost%2Freceive",
+        :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        to_return(fixture('updates_a_number.txt'))
+
+      configure_elk
+
+      number = Elk::Number.all[0]
+      number.country = 'no'
+      number.sms_url = 'http://otherhost/receive'
+      number.save.should == true
+      number.country.should == 'no'
+      number.sms_url.should == 'http://otherhost/receive'
+    end
   end
 
   describe Elk::SMS do
