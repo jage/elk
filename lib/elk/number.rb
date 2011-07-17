@@ -8,13 +8,13 @@ module Elk
     end
 
     def set_paramaters(parameters)
-      @country = parameters[:country]
-      @sms_url = parameters[:sms_url]
-      @status  = parameters[:active]
-      @number_id  = parameters[:id]
-      @number = parameters[:number]
+      @country      = parameters[:country]
+      @sms_url      = parameters[:sms_url]
+      @status       = parameters[:active]
+      @number_id    = parameters[:id]
+      @number       = parameters[:number]
       @capabilities = parameters[:capabilities].collect {|c| c.to_sym }
-      @loaded_at = Time.now
+      @loaded_at    = Time.now
     end
 
     def status
@@ -30,30 +30,24 @@ module Elk
 
     def reload
       response = Elk.get("/Numbers/#{self.number_id}")
-
       self.set_paramaters(Elk.parse_json(response.body))
-
       response.code == 200
     end
 
     def save
       response = Elk.post("/Numbers/#{self.number_id}", {:country => self.country, :sms_url => self.sms_url})
-
       response.code == 200
     end
 
     def deallocate!
       response = Elk.post("/Numbers/#{self.number_id}", {:active => 'no'})
-
       @status = 'no'
-
       response.code == 200
     end
 
     class << self
       def allocate(parameters)
         response = Elk.post('/Numbers', parameters)
-
         self.new(Elk.parse_json(response.body))
       end
 

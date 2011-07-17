@@ -30,21 +30,17 @@ module Elk
     end
 
     def get(path, parameters = {})
-      parameters = {}.merge(parameters)
-      url = base_url + path
-
-      RestClient.get(url, {:accept => :json})
-    rescue RestClient::Unauthorized
-      raise AuthError, "Authentication failed"
-    rescue RestClient::InternalServerError
-      raise ServerError, "Server error"
+      execute(:get, path, parameters)
     end
 
     def post(path, parameters = {})
-      parameters = {}.merge(parameters)
-      url = base_url + path
+      execute(:post, path, parameters)
+    end
 
-      RestClient.post(url, parameters, {:accept => :json})
+    def execute(method, path, parameters, headers={:accept => :json}, &block)
+      payload = {}.merge(parameters)
+      url = base_url + path
+      RestClient::Request.execute(:method => method, :url => url, :payload => payload, :headers => headers, &block)
     rescue RestClient::Unauthorized
       raise AuthError, "Authentication failed"
     rescue RestClient::InternalServerError

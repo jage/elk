@@ -26,11 +26,6 @@ elk uses rspec and webmock for testing, do a `bundle install` for all the develo
 
 elk can be used to allocate a phone numbers, manage the numbers and send/recieve messages through these numbers.
 
-### Classs
-
-    Elk::SMS
-    Elk::Number
-
 ### Authentication and configuration
 
 First thing when using elk is to set the authentication parameters
