@@ -12,6 +12,8 @@ module Elk
   API_VERSION = 'a1'
   VERSION = '0.0.2'
 
+  class AuthError < RuntimeError; end
+
   class << self
     attr_accessor :username
     attr_accessor :password
@@ -30,6 +32,8 @@ module Elk
       url = base_url + path
 
       RestClient.get(url, {:accept => :json})
+    rescue RestClient::Unauthorized
+      raise AuthError, "Authentication failed"
     end
 
     def post(path, parameters = {})
@@ -37,6 +41,8 @@ module Elk
       url = base_url + path
 
       RestClient.post(url, parameters, {:accept => :json})
+    rescue RestClient::Unauthorized
+      raise AuthError, "Authentication failed"
     end
   end
 end

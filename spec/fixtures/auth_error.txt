@@ -1,0 +1,9 @@
+HTTP/1.1 401 Authorization Required
+Server: nginx/0.7.67
+Date: Sun, 17 Jul 2011 16:18:36 GMT
+Content-Type: text/plain
+Connection: keep-alive
+Www-Authenticate: Basic realm="46elks API"
+Content-Length: 84
+
+API access require proper Basic HTTP authentication. Read documentation or examples.

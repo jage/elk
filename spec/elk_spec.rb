@@ -92,6 +92,21 @@ describe Elk do
       number.object_id.should == object_id
       number.loaded_at.should_not == loaded_at
     end
+
+    it 'has wrong password' do
+      stub_request(:get, "https://USERNAME:WRONG@api.46elks.com/a1/Numbers").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('auth_error.txt'))
+
+      Elk.configure do |config|
+        config.username = 'USERNAME'
+        config.password = 'WRONG'
+      end
+
+      expect {
+        Elk::Number.all
+      }.to raise_error(Elk::AuthError)
+    end
   end
 
   describe Elk::SMS do
