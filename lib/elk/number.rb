@@ -1,12 +1,12 @@
 module Elk
   class Number
-    attr_reader :number_id, :number, :capabilities
+    attr_reader :number_id, :number, :capabilities, :loaded_at
     attr_accessor :country, :sms_url
 
     def initialize(parameters)
       set_paramaters(parameters)
     end
-    
+
     def set_paramaters(parameters)
       @country = parameters[:country]
       @sms_url = parameters[:sms_url]
@@ -14,6 +14,7 @@ module Elk
       @number_id  = parameters[:id]
       @number = parameters[:number]
       @capabilities = parameters[:capabilities]
+      @loaded_at = Time.now
     end
 
     def status
@@ -31,6 +32,8 @@ module Elk
       response = Elk.get("/Numbers/#{self.number_id}")
 
       self.set_paramaters(JSON.parse(response.body, :symbolize_names => true))
+
+      response.code == 200
     end
 
     def save

@@ -81,15 +81,16 @@ describe Elk do
         with(:headers => {'Accept'=>'application/json'}).
         to_return(fixture('reloads_a_number.txt'))
 
-
       configure_elk
 
       number = Elk::Number.all[0]
       object_id = number.object_id
+      loaded_at = number.loaded_at
       number.country = 'blah'
-      number.reload
+      number.reload.should == true
       number.country.should == 'se'
       number.object_id.should == object_id
+      number.loaded_at.should_not == loaded_at
     end
   end
 
