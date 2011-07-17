@@ -119,6 +119,14 @@ describe Elk do
         Elk::Number.all
       }.to raise_error(Elk::ServerError)
     end
+
+    it 'gets garbage numbers' do
+      bad_response_body = File.read(fixture('bad_response_body.txt'))
+
+      expect {
+        Elk.parse_json(bad_response_body)
+      }.to raise_error(Elk::BadResponse)
+    end
   end
 
   describe Elk::SMS do

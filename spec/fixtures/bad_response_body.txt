@@ -1,0 +1,1 @@
+{"numbers": [{"country": "se", "number": "+46704508449", "capabilities": ["sms"], "active": "yes", "sms_url": "http://localhost/receive1", "id": "nea19c8e291676fb7003fa1d63bba7899"}, {"country": "se", "number": "+46761042247", "capabilities": ["sms"], "active": "yes", "sms_url": "http://localhost/receive2", "id": "nea19c8e29

@@ -31,7 +31,7 @@ module Elk
     def reload
       response = Elk.get("/Numbers/#{self.number_id}")
 
-      self.set_paramaters(JSON.parse(response.body, :symbolize_names => true))
+      self.set_paramaters(Elk.parse_json(response.body))
 
       response.code == 200
     end
@@ -54,13 +54,13 @@ module Elk
       def allocate(parameters)
         response = Elk.post('/Numbers', parameters)
 
-        self.new(JSON.parse(response.body, :symbolize_names => true))
+        self.new(Elk.parse_json(response.body))
       end
 
       def all
         response = Elk.get('/Numbers')
 
-        JSON.parse(response.body, :symbolize_names => true)[:numbers].collect do |n|
+        Elk.parse_json(response.body)[:numbers].collect do |n|
           self.new(n)
         end
       end

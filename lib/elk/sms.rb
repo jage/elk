@@ -17,7 +17,7 @@ module Elk
 
     def reload
       response = Elk.get("/SMS/#{self.message_id}")
-      self.set_parameters(JSON.parse(response.body, :symbolize_names => true))
+      self.set_parameters(Elk.parse_json(response.body))
       response.code == 200
     end
 
@@ -26,13 +26,13 @@ module Elk
         parameters = {}.merge(settings)
         response = Elk.post('/SMS', parameters)
 
-        self.new(JSON.parse(response.body, :symbolize_names => true))
+        self.new(Elk.parse_json(response.body))
       end
 
       def all
         response = Elk.get('/SMS')
 
-        JSON.parse(response.body, :symbolize_names => true)[:smses].collect do |n|
+        Elk.parse_json(response.body)[:smses].collect do |n|
           self.new(n)
         end
       end
