@@ -2,7 +2,7 @@
 require 'json/pure'
 require 'open-uri'
 require 'rest_client'
-require 'date'
+require 'time'
 # Internal
 require 'elk/number'
 require 'elk/sms'
