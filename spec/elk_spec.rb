@@ -16,7 +16,7 @@ describe Elk do
       number.sms_url.should == 'http://localhost/receive'
       number.country.should == 'se'
       number.number.should == '+46766861012'
-      number.capabilities == [:sms]
+      number.capabilities.should == [:sms]
     end
 
     it 'gets allocated numbers' do

@@ -13,7 +13,7 @@ module Elk
       @status  = parameters[:active]
       @number_id  = parameters[:id]
       @number = parameters[:number]
-      @capabilities = parameters[:capabilities]
+      @capabilities = parameters[:capabilities].collect {|c| c.to_sym }
       @loaded_at = Time.now
     end
 
