@@ -46,6 +46,8 @@ elk is a client to allocate a SMS number, send and receive SMS (receiving SMS re
 
     number = Elk::Number.allocate(:sms_url => 'http://myservice.se/callback/newsms.php', :country => 'se')
      # => Elk::Number
+    number.number
+     # => '+46704508449'
     number.status
      # => :active
     number.capabilities
@@ -73,20 +75,19 @@ Deallocates the number. Beware that there is no way to get your number back once
 ### Send SMS
 
     Elk::SMS.send(:from => '+46761042247 or “MyService”', :to => '+46704508449', :message => 'Your order #171 has now been sent!')
+     # => Elk::SMS
     # Defaults to the accounts first number
-    elk.send_sms(:to => '+46704508449', :message => 'Your order #171 has now been sent!')
+    Elk::SMS.send(:to => '+46704508449', :message => 'Your order #171 has now been sent!')
      # => Elk::SMS
 
 ### Receive SMS
 
-    receive(parameters)
-
+Receiving SMS does not require Elk, but should be of interest anyway.
 Example with Sinatra:
 
     post '/receive' do
-      sms = Elk::SMS.receive(request)
-
-      if sms[:message] == 'Hello'
+      if request.params['message'] == 'Hello'
+        # Sends a return SMS with message "world!"
         "world!"
       end
     end
