@@ -2,14 +2,6 @@ require 'spec_helper'
 require 'elk'
 
 describe Elk do
-  describe Elk::Account do
-    it 'initiates an account' do
-      elk = Elk::Account.new(:username => 'USERNAME', :password => 'PASSWORD')
-      elk.username.should == 'USERNAME'
-      elk.password.should == 'PASSWORD'
-    end
-  end
-
   describe Elk::Number do
     it 'allocates a number' do
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
@@ -17,13 +9,14 @@ describe Elk do
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('allocates_a_number.txt'))
 
+      configure_elk
 
-      elk = Elk::Account.new(:username => 'USERNAME', :password => 'PASSWORD')
-      number = Elk::Number.allocate(:account => elk, :sms_url => 'http://localhost/receive', :country => 'se')
+      number = Elk::Number.allocate(:sms_url => 'http://localhost/receive', :country => 'se')
       number.status.should == :active
       number.sms_url.should == 'http://localhost/receive'
       number.country.should == 'se'
       number.number.should == '+46766861012'
+      number.capabilities == [:sms]
     end
 
     it 'gets allocated numbers' do
@@ -31,8 +24,9 @@ describe Elk do
         with(:headers => {'Accept'=>'application/json'}).
         to_return(fixture('gets_allocated_numbers.txt'))
 
-      elk = Elk::Account.new(:username => 'USERNAME', :password => 'PASSWORD')
-      numbers = Elk::Number.numbers(:account => elk)
+      configure_elk
+
+      numbers = Elk::Number.all
       numbers.size.should == 2
       numbers[0].number_id.should == 'nea19c8e291676fb7003fa1d63bba7899'
       numbers[0].number.should == '+46704508449'
@@ -51,8 +45,9 @@ describe Elk do
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('sends_a_sms.txt'))
 
-      elk = Elk::Account.new(:username => 'USERNAME', :password => 'PASSWORD')
-      sms = Elk::SMS.send(:account => elk, :from => '+46761042247',
+      configure_elk
+
+      sms = Elk::SMS.send(:from => '+46761042247',
         :to => '+46704508449',
         :message => 'Your order #171 has now been sent!')
       #sms.status.should == Elk::SMS::Sent

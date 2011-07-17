@@ -10,3 +10,10 @@ end
 def fixture(file)
   File.new(File.join(fixture_path, file))
 end
+
+def configure_elk
+  Elk.configure do |config|
+    config.username = 'USERNAME'
+    config.password = 'PASSWORD'
+  end
+end
