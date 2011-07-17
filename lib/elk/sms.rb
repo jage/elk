@@ -11,7 +11,7 @@ module Elk
       @to = parameters[:to]
       @message = parameters[:message]
       @message_id = parameters[:id]
-      @created_at = DateTime.parse(parameters[:created])
+      @created_at = DateTime.parse(parameters[:created]).to_date
       @loaded_at = Time.now
     end
 
@@ -26,7 +26,7 @@ module Elk
         parameters = {}.merge(settings)
         response = Elk.post('/SMS', parameters)
 
-        JSON.parse(response.body, :symbolize_names => true)
+        self.new(JSON.parse(response.body, :symbolize_names => true))
       end
 
       def all

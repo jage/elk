@@ -106,7 +106,11 @@ describe Elk do
       sms = Elk::SMS.send(:from => '+46761042247',
         :to => '+46704508449',
         :message => 'Your order #171 has now been sent!')
-      #sms.status.should == Elk::SMS::Sent
+
+      sms.class.should == Elk::SMS
+      sms.from.should == '+46761042247'
+      sms.to.should == '+46704508449'
+      sms.message.should == 'Your order #171 has now been sent!'
     end
 
     it 'gets SMS-history' do
