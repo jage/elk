@@ -125,5 +125,24 @@ describe Elk do
       sms_history[1].message.should == "I'd like to order a pair of elks!"
       sms_history[2].message.should == "Want an elk?"
     end
+
+    it 'reloads a SMS' do
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('sms_history.txt'))
+      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS/s8952031bb83bf3e64f8e13b071c131c0").
+        with(:headers => {'Accept'=>'application/json'}).
+        to_return(fixture('reloads_a_sms.txt'))
+
+      configure_elk
+
+      sms_history = Elk::SMS.all
+      sms = sms_history[0]
+      loaded_at = sms.loaded_at
+      object_id = sms.object_id
+      sms.reload.should == true
+      sms.object_id.should == object_id
+      sms.loaded_at.should_not == loaded_at
+    end
   end
 end

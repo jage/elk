@@ -1,13 +1,24 @@
 module Elk
   class SMS
-    attr_reader :from, :to, :message, :message_id, :created_at
+    attr_reader :from, :to, :message, :message_id, :created_at, :loaded_at
 
     def initialize(parameters)
+      set_parameters(parameters)
+    end
+
+    def set_parameters(parameters)
       @from = parameters[:from]
       @to = parameters[:to]
       @message = parameters[:message]
       @message_id = parameters[:id]
       @created_at = DateTime.parse(parameters[:created])
+      @loaded_at = Time.now
+    end
+
+    def reload
+      response = Elk.get("/SMS/#{self.message_id}")
+      self.set_parameters(JSON.parse(response.body, :symbolize_names => true))
+      response.code == 200
     end
 
     class << self
