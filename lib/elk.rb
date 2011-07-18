@@ -15,6 +15,7 @@ module Elk
   class AuthError < RuntimeError; end
   class ServerError < RuntimeError; end
   class BadResponse < RuntimeError; end
+  class BadRequest < RuntimeError; end
 
   class << self
     attr_accessor :username
@@ -45,6 +46,8 @@ module Elk
       raise AuthError, "Authentication failed"
     rescue RestClient::InternalServerError
       raise ServerError, "Server error"
+    rescue RestClient::Forbidden => e
+      raise BadRequest, e.http_body
     end
 
     def parse_json(body)

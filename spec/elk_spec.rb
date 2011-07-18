@@ -221,5 +221,19 @@ describe Elk do
       sms.message.should == 'Your order #171 has now been sent!'
     end
 
+    it 'should handle invalid to number' do
+      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+        with(:body => {"from" => "+46761042247", :message => "Your order #171 has now been sent!", :to => "monkey"},
+             :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+        to_return(fixture('invalid_to_number.txt'))
+
+      configure_elk
+
+      expect {
+        sms = Elk::SMS.send(:from => '+46761042247',
+          :to => 'monkey',
+          :message => 'Your order #171 has now been sent!')
+      }.to raise_error(Elk::BadRequest, 'Invalid to number')
+    end
   end
 end
