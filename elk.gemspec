@@ -6,7 +6,8 @@ spec = Gem::Specification.new do |s|
   s.author = "Johan Eckerstroem"
   s.email = "johan@duh.se"
   s.summary = "Client library for 46elks SMS/MMS/Voice service."
-  s.description = "Used to configure numbers, send/reciev SMS/MMS/Voice messages at 46elks"
+  s.description = "Elk can be used to allocate a phone numbers, manage the numbers and send/recieve messages through these numbers."
+  s.homepage = "https://github.com/jage/elk"
 
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
