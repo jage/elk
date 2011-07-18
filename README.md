@@ -1,4 +1,4 @@
-Elk
+Elk - 46elks API-client [![Tested with Travis-CI](https://secure.travis-ci.org/jage/elk.png)](http://travis-ci.org/#!/jage/elk)
 ===
 
 Ruby client for 46elks "Voice, SMS & MMS" service. http://46elks.com/
