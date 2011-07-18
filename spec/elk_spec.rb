@@ -2,6 +2,14 @@ require 'spec_helper'
 require 'elk'
 
 describe Elk do
+  it 'should handle garbage json' do
+    bad_response_body = fixture('bad_response_body.txt').read
+
+    expect {
+      Elk.parse_json(bad_response_body)
+    }.to raise_error(Elk::BadResponse)
+  end
+
   describe Elk::Number do
     it 'allocates a number' do
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers").
@@ -119,21 +127,13 @@ describe Elk do
         Elk::Number.all
       }.to raise_error(Elk::ServerError)
     end
-    
+
     it 'should handle no parameters' do
       configure_elk
 
       expect {
         sms = Elk::Number.allocate({})
       }.to raise_error(Elk::MissingParameter)
-    end
-
-    it 'gets garbage numbers' do
-      bad_response_body = fixture('bad_response_body.txt').read
-
-      expect {
-        Elk.parse_json(bad_response_body)
-      }.to raise_error(Elk::BadResponse)
     end
   end
 
