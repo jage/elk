@@ -119,6 +119,14 @@ describe Elk do
         Elk::Number.all
       }.to raise_error(Elk::ServerError)
     end
+    
+    it 'should handle no parameters' do
+      configure_elk
+
+      expect {
+        sms = Elk::Number.allocate({})
+      }.to raise_error(Elk::MissingParameter)
+    end
 
     it 'gets garbage numbers' do
       bad_response_body = fixture('bad_response_body.txt').read
@@ -234,6 +242,14 @@ describe Elk do
           :to => 'monkey',
           :message => 'Your order #171 has now been sent!')
       }.to raise_error(Elk::BadRequest, 'Invalid to number')
+    end
+
+    it 'should handle no parameters' do
+      configure_elk
+
+      expect {
+        sms = Elk::SMS.send({})
+      }.to raise_error(Elk::MissingParameter)
     end
   end
 end

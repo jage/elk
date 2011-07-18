@@ -22,15 +22,16 @@ module Elk
     end
 
     class << self
-      def send(settings)
-        parameters = {}.merge(settings)
-        response = Elk.post('/SMS', parameters)
-        self.new(Elk.parse_json(response.body))
-      ensure
+      def send(parameters)
+        parameters.require_keys!([:from, :message, :to])
+
         # Warn if the from string will be capped by the sms gateway
-        if parameters[:from].match(/^(\w{11,})$/)
+        if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)
           warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"
         end
+
+        response = Elk.post('/SMS', parameters)
+        self.new(Elk.parse_json(response.body))
       end
 
       def all

@@ -47,6 +47,7 @@ module Elk
 
     class << self
       def allocate(parameters)
+        parameters.require_keys!([:sms_url, :country])
         response = Elk.post('/Numbers', parameters)
         self.new(Elk.parse_json(response.body))
       end

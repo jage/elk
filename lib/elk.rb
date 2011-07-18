@@ -16,6 +16,7 @@ module Elk
   class ServerError < RuntimeError; end
   class BadResponse < RuntimeError; end
   class BadRequest < RuntimeError; end
+  class MissingParameter < RuntimeError; end
 
   class << self
     attr_accessor :username
@@ -54,6 +55,14 @@ module Elk
       JSON.parse(body, :symbolize_names => true)
     rescue JSON::ParserError
       raise BadResponse, "Can't parse JSON"
+    end
+  end
+end
+
+class Hash
+  def require_keys!(required_keys)
+    unless (missing_parameters = required_keys - self.keys).empty?
+      raise Elk::MissingParameter, "Requires #{missing_parameters.collect {|s| ":#{s}"}.join(', ')} parameters"
     end
   end
 end
