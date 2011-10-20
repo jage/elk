@@ -1,13 +1,16 @@
 $:.unshift File.expand_path("../lib", __FILE__)
 
 spec = Gem::Specification.new do |s|
-  s.name = "elk"
-  s.version = "0.0.4"
-  s.author = "Johan Eckerstroem"
-  s.email = "johan@duh.se"
-  s.summary = "Client library for 46elks SMS/MMS/Voice service."
-  s.description = "Elk can be used to allocate a phone numbers, manage the numbers and send/recieve messages through these numbers."
-  s.homepage = "https://github.com/jage/elk"
+  s.platform    = Gem::Platform::RUBY
+  s.name        = "elk"
+  s.version     = "0.0.5"
+  s.author      = "Johan Eckerstroem"
+  s.email       = "johan@duh.se"
+  s.summary     = "Client library for 46elks SMS/MMS/Voice service."
+  s.description = "Elk can be used to allocate a phone numbers, manage the numbers and send SMS through these numbers."
+  s.homepage    = "https://github.com/jage/elk"
+
+  s.requirements << 'API account at 46elks.com'
 
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true

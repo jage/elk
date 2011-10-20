@@ -2,6 +2,31 @@ require 'spec_helper'
 require 'elk'
 
 describe Elk do
+  it 'should detect missing username and/or password' do
+    expect { Elk.base_url }.to raise_error(Elk::AuthError)
+
+    Elk.configure do |config|
+      config.username = nil
+      config.password = 'PASSWORD'
+    end
+
+    expect { Elk.base_url }.to raise_error(Elk::AuthError)
+
+    Elk.configure do |config|
+      config.username = 'USERNAME'
+      config.password = nil
+    end
+
+    expect { Elk.base_url }.to raise_error(Elk::AuthError)
+
+    Elk.configure do |config|
+      config.username = 'USERNAME'
+      config.password = 'PASSWORD'
+    end
+
+    expect { Elk.base_url }.to_not raise_error(Elk::AuthError)
+  end
+
   it 'should handle garbage json' do
     bad_response_body = fixture('bad_response_body.txt').read
 
@@ -50,7 +75,7 @@ describe Elk do
         with(:headers => {'Accept'=>'application/json'}).
         to_return(fixture('gets_allocated_numbers.txt'))
       stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers/nea19c8e291676fb7003fa1d63bba7899").
-        with(:body => {"country" => "no", "sms_url" => "http://otherhost/receive"},
+        with(:body => {"sms_url" => "http://otherhost/receive", "voice_start" => ""},
         :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('updates_a_number.txt'))
 

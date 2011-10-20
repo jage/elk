@@ -52,7 +52,6 @@ Get all numbers
 Change number settings
 
     number.sms_url = 'http://myservice.se/callback/newsms.php'
-    number.country = 'no'
     number.save
     # => true
 
