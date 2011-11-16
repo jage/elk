@@ -71,7 +71,7 @@ module Elk
       def all
         response = Elk.get('/Numbers')
 
-        Elk.parse_json(response.body)[:numbers].collect do |n|
+        Elk.parse_json(response.body)[:data].collect do |n|
           self.new(n)
         end
       end

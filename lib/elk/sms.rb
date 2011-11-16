@@ -45,7 +45,7 @@ module Elk
       # Get sent and received messages. Limited by the API to 100 latest
       def all
         response = Elk.get('/SMS')
-        Elk.parse_json(response.body)[:smses].collect do |n|
+        Elk.parse_json(response.body)[:data].collect do |n|
           self.new(n)
         end
       end

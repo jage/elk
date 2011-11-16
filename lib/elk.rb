@@ -12,7 +12,7 @@ module Elk
   # API version supported
   API_VERSION = 'a1'
   # Elk version
-  VERSION     = '0.0.5'
+  VERSION     = '0.0.6'
 
   # When the authentication can't be done
   class AuthError < RuntimeError; end

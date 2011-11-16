@@ -3,7 +3,7 @@ $:.unshift File.expand_path("../lib", __FILE__)
 spec = Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = "elk"
-  s.version     = "0.0.5"
+  s.version     = "0.0.6"
   s.author      = "Johan Eckerstroem"
   s.email       = "johan@duh.se"
   s.summary     = "Client library for 46elks SMS/MMS/Voice service."
