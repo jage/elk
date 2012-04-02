@@ -11,8 +11,6 @@ module Elk
   BASE_DOMAIN = 'api.46elks.com'
   # API version supported
   API_VERSION = 'a1'
-  # Elk version
-  VERSION     = '0.0.6'
 
   # When the authentication can't be done
   class AuthError < RuntimeError; end
