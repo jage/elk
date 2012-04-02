@@ -57,12 +57,14 @@ module Elk
     end
 
     class << self
+      include Elk::Util
+
       # Allocates a phone number
       #
       # * Required parameters: :country
       # * Optional parameters: :sms_url, :voice_start_url
       def allocate(parameters)
-        parameters.require_keys!([:country])
+        verify_parameters(parameters, [:country])
         response = Elk.post('/Numbers', parameters)
         self.new(Elk.parse_json(response.body))
       end

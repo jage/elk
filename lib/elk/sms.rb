@@ -24,6 +24,8 @@ module Elk
     end
 
     class << self
+      include Elk::Util
+      
       # Send SMS
       # Required parameters
       #
@@ -31,7 +33,7 @@ module Elk
       # * :to - Any phone number capable of receiving SMS
       # * :message - Any UTF-8 text Splitting and joining multi-part SMS messages are automatically handled by the API
       def send(parameters)
-        parameters.require_keys!([:from, :message, :to])
+        verify_parameters(parameters, [:from, :message, :to])
 
         # Warn if the from string will be capped by the sms gateway
         if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)

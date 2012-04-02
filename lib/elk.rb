@@ -88,17 +88,8 @@ module Elk
   end
 end
 
-# --
-# TODO: Not that nice to create methods in Hash
-# --
-class Hash #:nodoc: all
-  def require_keys!(required_keys)
-    unless (missing_parameters = required_keys - self.keys).empty?
-      raise Elk::MissingParameter, "Requires #{missing_parameters.collect {|s| ":#{s}"}.join(', ')} parameters"
-    end
-  end
-end
-
 # Internal
+require 'elk/util'
+require 'elk/version'
 require 'elk/number'
 require 'elk/sms'
