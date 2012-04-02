@@ -1,4 +1,5 @@
 require 'rake'
+require 'bundler/gem_tasks'
 
 desc "Run specs"
 task :spec do
