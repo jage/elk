@@ -1,9 +1,11 @@
 $:.unshift File.expand_path("../lib", __FILE__)
 
+require 'elk/version'
+
 spec = Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = "elk"
-  s.version     = "0.0.6"
+  s.version     = Elk::VERSION
   s.author      = "Johan Eckerstroem"
   s.email       = "johan@duh.se"
   s.summary     = "Client library for 46elks SMS/MMS/Voice service."
