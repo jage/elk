@@ -19,7 +19,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README.MD"]
 
   # elk dependencies
-  s.add_dependency("json_pure", "~> 1.5.2")
+  s.add_dependency("multi_json", "~> 1.3.4")
   s.add_dependency("rest-client", "~> 1.6.3")
 
   # Tests

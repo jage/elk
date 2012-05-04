@@ -1,5 +1,5 @@
 # External
-require 'json/pure'
+require 'multi_json'
 require 'open-uri'
 require 'rest_client'
 require 'time'
@@ -77,10 +77,10 @@ module Elk
       raise BadRequest, e.http_body
     end
 
-    # Wrapper around JSON.parse, symbolize names
+    # Wrapper around MultiJson.load, symbolize names
     def parse_json(body)
-      JSON.parse(body, :symbolize_names => true)
-    rescue JSON::ParserError
+      MultiJson.load(body, :symbolize_keys => true)
+    rescue MultiJson::DecodeError
       raise BadResponse, "Can't parse JSON"
     end
   end
