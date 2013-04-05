@@ -16,7 +16,7 @@ spec = Gem::Specification.new do |s|
 
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
-  s.extra_rdoc_files = ["README.MD"]
+  s.extra_rdoc_files = ["README.MD", "LICENSE"]
 
   # elk dependencies
   s.add_dependency("multi_json", "~> 1.5.0")
@@ -28,5 +28,5 @@ spec = Gem::Specification.new do |s|
   s.add_development_dependency("webmock", "~> 1.6.4")
 
   s.require_path = 'lib'
-  s.files = Dir.glob("{lib,spec}/**/*")
+  s.files = %w(README.MD LICENSE) + Dir["{lib,spec}/**/*"]
 end
