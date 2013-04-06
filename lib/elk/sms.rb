@@ -2,7 +2,7 @@ module Elk
   # Used to send SMS through 46elks SMS-gateway
   class SMS
     attr_reader :from, :to, :message, :message_id, :created_at, 
-                :loaded_at, :direction #:nodoc:
+                :loaded_at, :direction, :status #:nodoc:
 
     def initialize(parameters) #:nodoc:
       set_parameters(parameters)
@@ -16,6 +16,7 @@ module Elk
       @created_at = Time.parse(parameters[:created])
       @loaded_at  = Time.now
       @direction  = parameters[:direction]
+      @status     = parameters[:status]
     end
 
     # Reloads a SMS from server
