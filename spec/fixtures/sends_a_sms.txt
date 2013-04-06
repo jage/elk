@@ -3,6 +3,6 @@ Server: nginx/0.7.67
 Date: Tue, 05 Jul 2011 15:32:45 GMT
 Content-Type: application/json
 Connection: keep-alive
-Content-Length: 179
+Content-Length: 227
 
-{"to": "+46704508449", "message": "Your order #171 has now been sent!", "from": "+46761042247", "id": "scbc6667592e7245fa1abcdc74682f690", "created": "2011-07-05T15:32:45.296367"}
+{"to": "+46704508449", "message": "Your order #171 has now been sent!", "from": "+46761042247", "id": "scbc6667592e7245fa1abcdc74682f690", "created": "2011-07-05T15:32:45.296367", "direction": "outgoing", "status": "delivered"}

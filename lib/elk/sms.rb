@@ -1,7 +1,8 @@
 module Elk
   # Used to send SMS through 46elks SMS-gateway
   class SMS
-    attr_reader :from, :to, :message, :message_id, :created_at, :loaded_at #:nodoc:
+    attr_reader :from, :to, :message, :message_id, :created_at, 
+                :loaded_at, :direction, :status #:nodoc:
 
     def initialize(parameters) #:nodoc:
       set_parameters(parameters)
@@ -11,9 +12,11 @@ module Elk
       @from       = parameters[:from]
       @to         = parameters[:to]
       @message    = parameters[:message]
-      @message_id = parameters[:id]
+      @message_id = parameters[:id]      
       @created_at = Time.parse(parameters[:created])
       @loaded_at  = Time.now
+      @direction  = parameters[:direction]
+      @status     = parameters[:status]
     end
 
     # Reloads a SMS from server
@@ -44,7 +47,7 @@ module Elk
         self.new(Elk.parse_json(response.body))
       end
 
-      # Get sent and received messages. Limited by the API to 100 latest
+      # Get outgoing and incomming messages. Limited by the API to 100 latest
       def all
         response = Elk.get('/SMS')
         Elk.parse_json(response.body)[:data].collect do |n|

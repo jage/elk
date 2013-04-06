@@ -188,6 +188,8 @@ describe Elk do
       sms.from.should == '+46761042247'
       sms.to.should == '+46704508449'
       sms.message.should == 'Your order #171 has now been sent!'
+      sms.direction.should == 'outgoing'
+      sms.status.should == 'delivered'
     end
 
     it 'gets SMS-history' do
