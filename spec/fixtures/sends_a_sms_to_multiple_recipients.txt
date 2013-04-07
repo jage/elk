@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx/0.7.67
+Date: Tue, 05 Jul 2011 15:32:45 GMT
+Content-Type: application/json
+Connection: keep-alive
+Content-Length: 135
+
+[{"to": "+46704508449", "id": "sb326c7a214f9f4abc90a11bd36d6abc3"}, { "to": "+46704508449", "id": "s47a89d6cc51d8db395d45ae7e16e86b7"}]
