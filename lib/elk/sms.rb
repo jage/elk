@@ -13,7 +13,7 @@ module Elk
       @to         = parameters[:to]
       @message    = parameters[:message]
       @message_id = parameters[:id]      
-      @created_at = Time.parse(parameters[:created])
+      @created_at = Time.parse(parameters[:created]) if parameters[:created]
       @loaded_at  = Time.now
       @direction  = parameters[:direction]
       @status     = parameters[:status]
@@ -38,21 +38,36 @@ module Elk
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
+        parameters[:to] = Array(parameters[:to]).join(',')
+        
         # Warn if the from string will be capped by the sms gateway
         if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)
           warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"
         end
 
         response = Elk.post('/SMS', parameters)
-        self.new(Elk.parse_json(response.body))
+        parsed_response = Elk.parse_json(response.body)
+        
+        if multiple_recipients?(parameters[:to])
+          instantiate_multiple(parsed_response)
+        else
+          self.new(parsed_response)
+        end
       end
 
       # Get outgoing and incomming messages. Limited by the API to 100 latest
       def all
         response = Elk.get('/SMS')
-        Elk.parse_json(response.body)[:data].collect do |n|
-          self.new(n)
-        end
+        instantiate_multiple(Elk.parse_json(response.body)[:data])
+      end
+
+      private
+      def instantiate_multiple(multiple)
+        multiple.collect { |n| self.new(n) }
+      end
+
+      def multiple_recipients?(to)
+        to.split(',').length > 1
       end
     end
   end
