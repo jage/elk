@@ -218,7 +218,7 @@ describe Elk do
 
       it "sends the SMS when passing `to` as array" do
         smses = Elk::SMS.send(:from => '+46761042247',
-          :to => ['+46704508449' ,'+46704508449'],
+          :to => ['+46704508449', '+46704508449'],
           :message => 'Your order #171 has now been sent!')
 
         smses.size.should == 2
