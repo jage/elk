@@ -38,6 +38,8 @@ module Elk
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
+        parameters[:to] = Array(parameters[:to]).join(',')
+        
         # Warn if the from string will be capped by the sms gateway
         if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)
           warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"

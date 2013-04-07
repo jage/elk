@@ -192,24 +192,42 @@ describe Elk do
       sms.status.should == 'delivered'
     end
 
-    it 'sends SMS to multiple recipients' do
-      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
-        with(:body => {"from" => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449,+46704508449"},
-             :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
-        to_return(fixture('sends_a_sms_to_multiple_recipients.txt'))
 
-      configure_elk
-  
-      smses = Elk::SMS.send(:from => '+46761042247',
-        :to => '+46704508449,+46704508449',
-        :message => 'Your order #171 has now been sent!')
+    context 'when sending a SMS to multiple recipients' do
+      before do
+        stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+          with(:body => {"from" => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449,+46704508449"},
+               :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+          to_return(fixture('sends_a_sms_to_multiple_recipients.txt'))
 
-      smses.size.should == 2
-      smses[0].class.should == Elk::SMS
-      smses[0].to.should == "+46704508449"
+        configure_elk
+      end        
 
-      smses[0].message_id.should == "sb326c7a214f9f4abc90a11bd36d6abc3"
-      smses[1].message_id.should == "s47a89d6cc51d8db395d45ae7e16e86b7"
+      it "sends the SMS when passing `to` as comma separated string" do
+        smses = Elk::SMS.send(:from => '+46761042247',
+          :to => '+46704508449,+46704508449',
+          :message => 'Your order #171 has now been sent!')
+
+        smses.size.should == 2
+        smses[0].class.should == Elk::SMS
+        smses[0].to.should == "+46704508449"
+
+        smses[0].message_id.should == "sb326c7a214f9f4abc90a11bd36d6abc3"
+        smses[1].message_id.should == "s47a89d6cc51d8db395d45ae7e16e86b7"
+      end
+
+      it "sends the SMS when passing `to` as array" do
+        smses = Elk::SMS.send(:from => '+46761042247',
+          :to => ['+46704508449' ,'+46704508449'],
+          :message => 'Your order #171 has now been sent!')
+
+        smses.size.should == 2
+        smses[0].class.should == Elk::SMS
+        smses[0].to.should == "+46704508449"
+
+        smses[0].message_id.should == "sb326c7a214f9f4abc90a11bd36d6abc3"
+        smses[1].message_id.should == "s47a89d6cc51d8db395d45ae7e16e86b7"
+      end
     end
 
     it 'gets SMS-history' do
