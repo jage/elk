@@ -3,9 +3,10 @@ require 'elk'
 
 describe Elk::SMS do
   before { configure_elk }
+  let(:url) { "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS" }
 
   it 'sends a SMS' do
-    stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+    stub_request(:post, url).
       with(:body => {:from => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449"},
            :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
       to_return(fixture('sends_a_sms.txt'))
@@ -33,7 +34,7 @@ describe Elk::SMS do
 
   context 'when sending a SMS to multiple recipients' do
     before do
-      stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+      stub_request(:post, url).
         with(:body => {:from => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449,+46704508449"},
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('sends_a_sms_to_multiple_recipients.txt'))
@@ -67,7 +68,7 @@ describe Elk::SMS do
   end
 
   it 'gets SMS-history' do
-    stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+    stub_request(:get, url).
       with(:headers => {'Accept'=>'application/json'}).
       to_return(fixture('sms_history.txt'))
 
@@ -83,7 +84,7 @@ describe Elk::SMS do
   end
 
   it 'reloads a SMS' do
-    stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+    stub_request(:get, url).
       with(:headers => {'Accept'=>'application/json'}).
       to_return(fixture('sms_history.txt'))
     stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS/s8952031bb83bf3e64f8e13b071c131c0").
@@ -100,7 +101,7 @@ describe Elk::SMS do
   end
 
   it 'should warn about capped sms sender' do
-    stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+    stub_request(:post, url).
       with(:body => {:from => "VeryVeryVeryVeryLongSenderName", :message => "Your order #171 has now been sent!", :to => "+46704508449"},
            :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
       to_return(fixture('sends_a_sms_with_long_sender.txt'))
@@ -125,7 +126,7 @@ describe Elk::SMS do
   end
 
   it 'should handle invalid to number' do
-    stub_request(:post, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS").
+    stub_request(:post, url).
       with(:body => {:from => "+46761042247", :message => "Your order #171 has now been sent!", :to => "monkey"},
            :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
       to_return(fixture('invalid_to_number.txt'))
