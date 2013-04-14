@@ -32,6 +32,21 @@ describe Elk::SMS do
     sms.status.should == 'delivered'
   end
 
+  it "sends a flash SMS" do
+    stub = stub_request(:post, url).
+      to_return(fixture('sends_a_sms.txt'))
+
+    described_class.send(:from => '+46761042247',
+      :to => '+46704508449',
+      :message => 'Your order #171 has now been sent!',
+      :flash => true)
+
+    stub.
+      with(:body => 'from=%2B46761042247&to=%2B46704508449&message=Your%20order%20%23171%20has%20now%20been%20sent!&flashsms=yes',
+           :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+      should have_been_made
+  end
+
   context 'when sending a SMS to multiple recipients' do
     before do
       stub_request(:post, url).

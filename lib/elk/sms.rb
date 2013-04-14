@@ -40,6 +40,11 @@ module Elk
 
         parameters[:to] = Array(parameters[:to]).join(',')
         
+        if parameters[:flash]
+          parameters.delete(:flash)
+          parameters[:flashsms] = 'yes'
+        end
+
         # Warn if the from string will be capped by the sms gateway
         if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)
           warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"
