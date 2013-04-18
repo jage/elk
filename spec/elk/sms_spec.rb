@@ -36,14 +36,21 @@ describe Elk::SMS do
     stub = stub_request(:post, url).
       to_return(fixture('sends_a_sms.txt'))
 
-    described_class.send(:from => '+46761042247',
+    described_class.send(
+      :from => '+46761042247',
       :to => '+46704508449',
       :message => 'Your order #171 has now been sent!',
-      :flash => true)
+      :flash => true
+    )
 
-    stub.
-      with(:body => 'from=%2B46761042247&to=%2B46704508449&message=Your%20order%20%23171%20has%20now%20been%20sent!&flashsms=yes',
-           :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
+    stub.with(
+      :body => {
+        :from => '+46761042247',
+        :to => '+46704508449',
+        :message => 'Your order #171 has now been sent!',
+        :flashsms => 'yes'
+      },
+      :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
       should have_been_made
   end
 
@@ -53,7 +60,7 @@ describe Elk::SMS do
         with(:body => {:from => "+46761042247", :message => "Your order #171 has now been sent!", :to => "+46704508449,+46704508449"},
              :headers => {'Accept'=>'application/json', 'Content-Type'=>'application/x-www-form-urlencoded'}).
         to_return(fixture('sends_a_sms_to_multiple_recipients.txt'))
-    end        
+    end
 
     it "sends the SMS when passing `to` as comma separated string" do
       smses = described_class.send(:from => '+46761042247',
