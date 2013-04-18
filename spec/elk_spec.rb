@@ -2,36 +2,57 @@ require 'spec_helper'
 require 'elk'
 
 describe Elk do
-  it 'should detect missing username and/or password' do
-    expect { described_class.base_url }.to raise_error(described_class::AuthError)
+  context "detect missing username and/or password" do
+    context "when nothing is configured" do
+      specify do
+        Elk.configure do |config|
+          config.username = nil
+          config.password = nil
+        end
 
-    described_class.configure do |config|
-      config.username = nil
-      config.password = 'PASSWORD'
+        expect { Elk.base_url }.to raise_error(Elk::AuthError)
+      end
     end
 
-    expect { described_class.base_url }.to raise_error(described_class::AuthError)
+    context "when username is missing" do
+      specify do
+        Elk.configure do |config|
+          config.username = nil
+          config.password = 'PASSWORD'
+        end
 
-    described_class.configure do |config|
-      config.username = 'USERNAME'
-      config.password = nil
+        expect { Elk.base_url }.to raise_error(Elk::AuthError)
+      end
     end
 
-    expect { described_class.base_url }.to raise_error(described_class::AuthError)
+    context "when password is missing" do
+      specify do
+        Elk.configure do |config|
+          config.username = 'USERNAME'
+          config.password = nil
+        end
 
-    described_class.configure do |config|
-      config.username = 'USERNAME'
-      config.password = 'PASSWORD'
+        expect { Elk.base_url }.to raise_error(Elk::AuthError)
+      end
     end
 
-    expect { described_class.base_url }.to_not raise_error(described_class::AuthError)
+    context "when all is configured" do
+      specify do
+        Elk.configure do |config|
+          config.username = 'USERNAME'
+          config.password = 'PASSWORD'
+        end
+
+        expect { Elk.base_url }.to_not raise_error(Elk::AuthError)
+      end
+    end
   end
 
   it 'should handle garbage json' do
     bad_response_body = fixture('bad_response_body.txt').read
 
     expect {
-      described_class.parse_json(bad_response_body)
-    }.to raise_error(described_class::BadResponse)
+      Elk.parse_json(bad_response_body)
+    }.to raise_error(Elk::BadResponse)
   end
 end
