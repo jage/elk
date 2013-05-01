@@ -33,8 +33,12 @@ module Elk
       # Required parameters
       #
       # * :from - Either the one of the allocated numbers or arbitrary alphanumeric string of at most 11 characters
-      # * :to - Any phone number capable of receiving SMS
+      # * :to - Any phone number capable of receiving SMS. Multiple numbers can be given as Array or comma separated String
       # * :message - Any UTF-8 text Splitting and joining multi-part SMS messages are automatically handled by the API
+      # 
+      # Optional parameters
+      # * :flash - if set to non-false value SMS is sent as a "Flash SMS"
+      #
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
