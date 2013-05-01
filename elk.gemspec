@@ -27,7 +27,7 @@ spec = Gem::Specification.new do |s|
   # Tests
   s.add_development_dependency("rake", "~> 0.9.2")
   s.add_development_dependency("rspec", "~> 2.6.0")
-  s.add_development_dependency("webmock", "~> 1.6.4")
+  s.add_development_dependency("webmock", "~> 1.11.0")
 
   s.require_path = 'lib'
   s.files = %w(README.MD MIT-LICENSE) + Dir["{lib,spec}/**/*"]
