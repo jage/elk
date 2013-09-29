@@ -21,13 +21,13 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = ["README.MD", "MIT-LICENSE"]
 
   # elk dependencies
-  s.add_dependency("multi_json", "~> 1.5.0")
-  s.add_dependency("rest-client", "~> 1.6.3")
+  s.add_dependency("multi_json", "~> 1.0")
+  s.add_dependency("rest-client", "~> 1.6")
 
   # Tests
-  s.add_development_dependency("rake", "~> 0.9.2")
-  s.add_development_dependency("rspec", "~> 2.6.0")
-  s.add_development_dependency("webmock", "~> 1.11.0")
+  s.add_development_dependency("rake", "~> 10.0")
+  s.add_development_dependency("rspec", "~> 2.0")
+  s.add_development_dependency("webmock", "~> 1.0")
 
   s.require_path = 'lib'
   s.files = %w(README.MD MIT-LICENSE) + Dir["{lib,spec}/**/*"]
