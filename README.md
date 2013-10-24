@@ -19,7 +19,7 @@ The source for Elk is available on Github:
 
     https://github.com/jage/elk
 
-elk uses rspec and webmock for testing, do a `bundle install` for all the development requirements.
+elk uses rspec and webmock for testing, do a `bundle install` for all the development requirements. Test specs with  `bundle exec rake spec`.
 
 ## Usage
 
