@@ -1,7 +1,7 @@
 module Elk
   # Used to send SMS through 46elks SMS-gateway
   class SMS
-    attr_reader :from, :to, :message, :message_id, :created_at, 
+    attr_reader :from, :to, :message, :message_id, :created_at,
                 :loaded_at, :direction, :status #:nodoc:
 
     def initialize(parameters) #:nodoc:
@@ -12,7 +12,7 @@ module Elk
       @from       = parameters[:from]
       @to         = parameters[:to]
       @message    = parameters[:message]
-      @message_id = parameters[:id]      
+      @message_id = parameters[:id]
       @created_at = Time.parse(parameters[:created]) if parameters[:created]
       @loaded_at  = Time.now
       @direction  = parameters[:direction]
@@ -28,14 +28,14 @@ module Elk
 
     class << self
       include Elk::Util
-      
+
       # Send SMS
       # Required parameters
       #
       # * :from - Either the one of the allocated numbers or arbitrary alphanumeric string of at most 11 characters
       # * :to - Any phone number capable of receiving SMS. Multiple numbers can be given as Array or comma separated String
       # * :message - Any UTF-8 text Splitting and joining multi-part SMS messages are automatically handled by the API
-      # 
+      #
       # Optional parameters
       # * :flash - if set to non-false value SMS is sent as a "Flash SMS"
       #
@@ -57,7 +57,7 @@ module Elk
 
         response = Elk.post('/SMS', parameters)
         parsed_response = Elk.parse_json(response.body)
-        
+
         if multiple_recipients?(parameters[:to])
           instantiate_multiple(parsed_response)
         else
