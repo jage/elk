@@ -42,8 +42,9 @@ module Elk
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
-        parameters[:to] = Array(parameters[:to]).join(',')
-        
+        recipient_numbers = Array(parameters[:to])
+        parameters[:to] = recipient_numbers.join(',')
+
         if parameters[:flash]
           parameters.delete(:flash)
           parameters[:flashsms] = 'yes'
