@@ -29,11 +29,11 @@ describe Elk::Number do
     numbers.size.should         == 2
     numbers[0].number_id.should == 'nea19c8e291676fb7003fa1d63bba7899'
     numbers[0].number.should    == '+46704508449'
-    numbers[0].sms_url          == 'http://localhost/receive1'
+    numbers[0].sms_url.should   == 'http://localhost/receive1'
 
     numbers[1].number_id.should == 'nea19c8e291676fb7003fa1d63bba789A'
     numbers[1].number.should    == '+46761042247'
-    numbers[0].sms_url          == 'http://localhost/receive2'
+    numbers[1].sms_url.should   == 'http://localhost/receive2'
   end
 
   it 'updates a number' do
