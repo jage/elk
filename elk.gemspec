@@ -20,6 +20,8 @@ spec = Gem::Specification.new do |s|
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.MD", "MIT-LICENSE"]
 
+  s.required_ruby_version = ">= 1.9.3"
+
   # elk dependencies
   s.add_dependency("multi_json", "~> 1.0")
   s.add_dependency("rest-client", "~> 1.6")

@@ -5,6 +5,8 @@ At the moment the API only supports sending SMS messages.
 
 ## Requirements
 
+This gem is only supported on Ruby 1.9 and 2.0.
+
 * API account at 46elks.com
 
 ## Install
