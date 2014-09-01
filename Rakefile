@@ -3,7 +3,6 @@ require 'bundler/gem_tasks'
 
 desc "Run specs"
 task :spec do
-  sh('bundle install')
   require 'rubygems'
   require 'bundler/setup'
   require 'rspec/core/rake_task'

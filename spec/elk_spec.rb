@@ -43,7 +43,7 @@ describe Elk do
           config.password = 'PASSWORD'
         end
 
-        expect { Elk.base_url }.to_not raise_error(Elk::AuthError)
+        expect { Elk.base_url }.not_to raise_error
       end
     end
   end

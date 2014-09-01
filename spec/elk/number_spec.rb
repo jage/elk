@@ -11,10 +11,11 @@ describe Elk::Number do
       to_return(fixture('allocates_a_number.txt'))
 
     number = described_class.allocate(:sms_url => 'http://localhost/receive', :country => 'se')
-    number.status.should == :active
-    number.sms_url.should == 'http://localhost/receive'
-    number.country.should == 'se'
-    number.number.should == '+46766861012'
+
+    number.status.should       == :active
+    number.sms_url.should      == 'http://localhost/receive'
+    number.country.should      == 'se'
+    number.number.should       == '+46766861012'
     number.capabilities.should == [:sms]
   end
 
@@ -24,14 +25,15 @@ describe Elk::Number do
       to_return(fixture('gets_allocated_numbers.txt'))
 
     numbers = described_class.all
-    numbers.size.should == 2
+
+    numbers.size.should         == 2
     numbers[0].number_id.should == 'nea19c8e291676fb7003fa1d63bba7899'
-    numbers[0].number.should == '+46704508449'
-    numbers[0].sms_url == 'http://localhost/receive1'
+    numbers[0].number.should    == '+46704508449'
+    numbers[0].sms_url.should   == 'http://localhost/receive1'
 
     numbers[1].number_id.should == 'nea19c8e291676fb7003fa1d63bba789A'
-    numbers[1].number.should == '+46761042247'
-    numbers[0].sms_url == 'http://localhost/receive2'
+    numbers[1].number.should    == '+46761042247'
+    numbers[1].sms_url.should   == 'http://localhost/receive2'
   end
 
   it 'updates a number' do
@@ -46,7 +48,8 @@ describe Elk::Number do
     number = described_class.all[0]
     number.country = 'no'
     number.sms_url = 'http://otherhost/receive'
-    number.save.should == true
+
+    number.save.should    == true
     number.country.should == 'no'
     number.sms_url.should == 'http://otherhost/receive'
   end
@@ -61,9 +64,10 @@ describe Elk::Number do
       to_return(fixture('deallocates_a_number.txt'))
 
     number = described_class.all[0]
-    number.status.should == :active
+
+    number.status.should      == :active
     number.deallocate!.should == true
-    number.status.should == :deallocated
+    number.status.should      == :deallocated
   end
 
   it 'reloads a number' do
@@ -78,9 +82,10 @@ describe Elk::Number do
     object_id = number.object_id
     loaded_at = number.loaded_at
     number.country = 'blah'
-    number.reload.should == true
-    number.country.should == 'se'
-    number.object_id.should == object_id
+
+    number.reload.should        == true
+    number.country.should       == 'se'
+    number.object_id.should     == object_id
     number.loaded_at.should_not == loaded_at
   end
 
