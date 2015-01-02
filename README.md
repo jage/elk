@@ -1,5 +1,8 @@
 # Elk - 46elks API-client
 
+[![Build Status](https://travis-ci.org/jage/elk.svg?branch=master)](https://travis-ci.org/jage/elk)
+[![Code Climate](https://codeclimate.com/github/jage/elk/badges/gpa.svg)](https://codeclimate.com/github/jage/elk)
+
 Ruby client for 46elks "Voice, SMS & MMS" service. http://46elks.com/
 At the moment the API only supports sending SMS messages.
 
