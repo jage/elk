@@ -106,4 +106,4 @@ Elk::SMS.all
 
 ## Copyright
 
-Copyright (c) 2011 Johan Eckerström. See LICENSE for details.
+Copyright (c) 2011 Johan Eckerström. See [MIT-LICENSE](MIT-LICENSE) for details.
