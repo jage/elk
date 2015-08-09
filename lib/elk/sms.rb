@@ -50,10 +50,7 @@ module Elk
           parameters[:flashsms] = 'yes'
         end
 
-        # Warn if the from string will be capped by the sms gateway
-        if parameters[:from] && parameters[:from].match(/^(\w{11,})$/)
-          warn "SMS 'from' value #{parameters[:from]} will be capped at 11 chars"
-        end
+        check_sender_limit(parameters[:from])
 
         response = Elk.post('/SMS', parameters)
         parsed_response = Elk.parse_json(response.body)
@@ -78,6 +75,13 @@ module Elk
 
       def multiple_recipients?(to)
         to.split(',').length > 1
+      end
+
+      # Warn if the from string will be capped by the sms gateway
+      def check_sender_limit(from)
+        if from.to_s.match(/^(\w{11,})$/)
+          warn "SMS 'from' value #{from} will be capped at 11 chars"
+        end
       end
     end
   end
