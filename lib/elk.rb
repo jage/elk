@@ -68,7 +68,15 @@ module Elk
     def execute(method, path, parameters, headers={:accept => :json}, &block)
       payload = {}.merge(parameters)
       url = base_url + path
-      RestClient::Request.execute(:method => method, :url => url, :payload => payload, :headers => headers, &block)
+
+      request_arguments = {
+        :method  => method,
+        :url     => url,
+        :payload => payload,
+        :headers => headers
+      }
+
+      RestClient::Request.execute(request_arguments, &block)
     rescue RestClient::Unauthorized
       raise AuthError, "Authentication failed"
     rescue RestClient::InternalServerError
