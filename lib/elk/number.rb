@@ -42,7 +42,7 @@ module Elk
     def save
       attributes = {:sms_url => self.sms_url, :voice_start => self.voice_start_url}
       # If new URL, send country, otherwise not
-      if !self.number_id
+      unless self.number_id
         attributes[:country] = self.country
       end
       response = Elk.post("/Numbers/#{self.number_id}", attributes)

@@ -43,7 +43,7 @@ module Elk
 
     # Base URL used for calling 46elks API
     def base_url
-      if not username or not password
+      unless username && password
         raise AuthError, "API username and password required"
       end
 
