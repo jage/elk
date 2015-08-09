@@ -65,7 +65,8 @@ module Elk
       # * Optional parameters: :sms_url, :voice_start_url
       def allocate(parameters)
         verify_parameters(parameters, [:country])
-        response = Elk.post('/Numbers', parameters)
+        arguments = parameters.dup
+        response = Elk.post('/Numbers', arguments)
         self.new(Elk.parse_json(response.body))
       end
 

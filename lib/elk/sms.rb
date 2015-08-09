@@ -42,20 +42,22 @@ module Elk
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
+        arguments = parameters.dup
+
         recipient_numbers = Array(parameters[:to])
-        parameters[:to] = recipient_numbers.join(',')
+        arguments[:to] = recipient_numbers.join(',')
 
         if parameters[:flash]
-          parameters.delete(:flash)
-          parameters[:flashsms] = 'yes'
+          arguments.delete(:flash)
+          arguments[:flashsms] = 'yes'
         end
 
-        check_sender_limit(parameters[:from])
+        check_sender_limit(arguments[:from])
 
-        response = Elk.post('/SMS', parameters)
+        response = Elk.post('/SMS', arguments)
         parsed_response = Elk.parse_json(response.body)
 
-        if multiple_recipients?(parameters[:to])
+        if multiple_recipients?(arguments[:to])
           instantiate_multiple(parsed_response)
         else
           self.new(parsed_response)
