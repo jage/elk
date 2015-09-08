@@ -28,7 +28,7 @@ spec = Gem::Specification.new do |s|
 
   # Tests
   s.add_development_dependency("rake", "~> 10.0")
-  s.add_development_dependency("rspec", "~> 2.0")
+  s.add_development_dependency("rspec", "~> 3.0")
   s.add_development_dependency("webmock", "~> 1.0")
 
   s.require_path = 'lib'

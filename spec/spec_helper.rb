@@ -15,3 +15,11 @@ def configure_elk
     config.password = 'PASSWORD'
   end
 end
+
+def get_headers
+  { "Accept" => "application/json" }
+end
+
+def post_headers
+  { "Accept" => "application/json", "Content-Type" => "application/x-www-form-urlencoded" }
+end
