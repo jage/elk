@@ -66,8 +66,9 @@ module Elk
 
       # Get outgoing and incomming messages. Limited by the API to 100 latest
       def all
-        response = Elk.get('/SMS')
-        instantiate_multiple(Elk.parse_json(response.body)[:data])
+        response = Elk.get("/SMS")
+        messages = Elk.parse_json(response.body).fetch(:data)
+        instantiate_multiple(messages)
       end
 
       private
