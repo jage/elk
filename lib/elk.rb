@@ -1,8 +1,8 @@
 # External
-require 'multi_json'
-require 'open-uri'
-require 'rest_client'
-require 'time'
+require "multi_json"
+require "open-uri"
+require "rest_client"
+require "time"
 
 # Base module
 # Used for to configure username and password through Elk.configure
