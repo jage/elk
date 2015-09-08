@@ -24,10 +24,6 @@ module Elk
   class MissingParameter < RuntimeError; end
 
   class << self
-    # API Username from 46elks.com
-    attr_accessor :username
-    # API Password from 46elks.com
-    attr_accessor :password
     # Defaults to Elk::BASE_DOMAIN, but can be overriden for testing
     attr_accessor :base_domain
 
@@ -38,7 +34,28 @@ module Elk
     #     config.password = "PASSWORD"
     #   end
     def configure
-      yield self
+      yield client
+    end
+
+    # Not thread safe
+    def client
+      @client ||= Client.new
+    end
+
+    def username
+      client.username
+    end
+
+    def username=(user)
+      client.username = user
+    end
+
+    def password
+      client.password
+    end
+
+    def password=(passwd)
+      client.password = passwd
     end
 
     # Base URL used for calling 46elks API
@@ -97,5 +114,6 @@ end
 # Internal
 require_relative "elk/util"
 require_relative "elk/version"
+require_relative "elk/client"
 require_relative "elk/number"
 require_relative "elk/sms"

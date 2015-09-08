@@ -2,6 +2,21 @@ require "spec_helper"
 require "elk"
 
 describe Elk do
+
+  subject { Elk }
+
+  it { is_expected.to respond_to(:client) }
+  it { is_expected.to respond_to(:username) }
+  it { is_expected.to respond_to(:username=) }
+  it { is_expected.to respond_to(:password) }
+  it { is_expected.to respond_to(:password=) }
+
+  describe ".client" do
+    it "should reuse the same client object" do
+      expect(Elk.client.object_id).to eq(Elk.client.object_id)
+    end
+  end
+
   describe ".base_url" do
     context "detect missing username and/or password" do
       context "when nothing is configured" do
