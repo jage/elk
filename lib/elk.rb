@@ -8,11 +8,6 @@ require "forwardable"
 # Base module
 # Used for to configure username and password through Elk.configure
 module Elk
-  # Base domain for 46elks API
-  BASE_DOMAIN = "api.46elks.com"
-  # API version supported
-  API_VERSION = "a1"
-
   class << self
     extend Forwardable
 

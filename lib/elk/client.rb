@@ -1,5 +1,10 @@
 module Elk
   class Client
+    # Base domain for 46elks API
+    BASE_DOMAIN = "api.46elks.com"
+    # API version supported
+    API_VERSION = "a1"
+
     # API Username from 46elks.com
     attr_accessor :username
     # API Password from 46elks.com
