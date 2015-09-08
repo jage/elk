@@ -6,6 +6,9 @@ describe Elk do
   subject { Elk }
 
   it { is_expected.to respond_to(:client) }
+  it { is_expected.to respond_to(:configure) }
+  it { is_expected.to respond_to(:base_url) }
+  it { is_expected.to respond_to(:base_domain) }
   it { is_expected.to respond_to(:username) }
   it { is_expected.to respond_to(:username=) }
   it { is_expected.to respond_to(:password) }
@@ -21,45 +24,45 @@ describe Elk do
     context "detect missing username and/or password" do
       context "when nothing is configured" do
         specify do
-          Elk.configure do |config|
+          subject.configure do |config|
             config.username = nil
             config.password = nil
           end
 
-          expect { Elk.base_url }.to raise_error(Elk::AuthError)
+          expect { subject.base_url }.to raise_error(Elk::AuthError)
         end
       end
 
       context "when username is missing" do
         specify do
-          Elk.configure do |config|
+          subject.configure do |config|
             config.username = nil
             config.password = "PASSWORD"
           end
 
-          expect { Elk.base_url }.to raise_error(Elk::AuthError)
+          expect { subject.base_url }.to raise_error(Elk::AuthError)
         end
       end
 
       context "when password is missing" do
         specify do
-          Elk.configure do |config|
+          subject.configure do |config|
             config.username = "USERNAME"
             config.password = nil
           end
 
-          expect { Elk.base_url }.to raise_error(Elk::AuthError)
+          expect { subject.base_url }.to raise_error(Elk::AuthError)
         end
       end
 
       context "when all is configured" do
         specify do
-          Elk.configure do |config|
+          subject.configure do |config|
             config.username = "USERNAME"
             config.password = "PASSWORD"
           end
 
-          expect { Elk.base_url }.not_to raise_error
+          expect { subject.base_url }.not_to raise_error
         end
       end
     end

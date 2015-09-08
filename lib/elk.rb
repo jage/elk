@@ -25,13 +25,11 @@ module Elk
   class MissingParameter < RuntimeError; end
 
   class << self
-    # Defaults to Elk::BASE_DOMAIN, but can be overriden for testing
-    attr_accessor :base_domain
 
     extend Forwardable
 
     # Delegate methods to client
-    %i(username username= password password=).each do |method|
+    %i(username username= password password= base_domain base_url get post execute).each do |method|
       def_delegator :client, method
     end
 
@@ -48,50 +46,6 @@ module Elk
     # Not thread safe
     def client
       @client ||= Client.new
-    end
-
-    # Base URL used for calling 46elks API
-    def base_url
-      unless username && password
-        raise AuthError, "API username and password required"
-      end
-
-      "https://#{username}:#{password}@#{(base_domain || BASE_DOMAIN)}/#{API_VERSION}"
-    end
-
-    # Wrapper for Elk.execute(:get)
-    def get(path, parameters = {})
-      execute(:get, path, parameters)
-    end
-
-    # Wrapper for Elk::execute(:post)
-    def post(path, parameters = {})
-      execute(:post, path, parameters)
-    end
-
-    # Wrapper around RestClient::RestClient.execute
-    #
-    # * Sets accept header to json
-    # * Handles some exceptions
-    #
-    def execute(method, path, parameters, headers = { accept: :json }, &block)
-      payload = {}.merge(parameters)
-      url = base_url + path
-
-      request_arguments = {
-        method:  method,
-        url:     url,
-        payload: payload,
-        headers: headers
-      }
-
-      RestClient::Request.execute(request_arguments, &block)
-    rescue RestClient::Unauthorized
-      raise AuthError, "Authentication failed"
-    rescue RestClient::InternalServerError
-      raise ServerError, "Server error"
-    rescue RestClient::Forbidden => e
-      raise BadRequest, e.http_body
     end
 
     # Wrapper around MultiJson.load, symbolize names
