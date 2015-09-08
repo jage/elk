@@ -95,7 +95,7 @@ module Elk
 end
 
 # Internal
-require "elk/util"
-require "elk/version"
-require "elk/number"
-require "elk/sms"
+require_relative "elk/util"
+require_relative "elk/version"
+require_relative "elk/number"
+require_relative "elk/sms"
