@@ -3,6 +3,7 @@ require "multi_json"
 require "open-uri"
 require "rest_client"
 require "time"
+require "forwardable"
 
 # Base module
 # Used for to configure username and password through Elk.configure
@@ -27,6 +28,13 @@ module Elk
     # Defaults to Elk::BASE_DOMAIN, but can be overriden for testing
     attr_accessor :base_domain
 
+    extend Forwardable
+
+    # Delegate methods to client
+    %i(username username= password password=).each do |method|
+      def_delegator :client, method
+    end
+
     # Set up authentication credentials, has to be done before using Elk::Number and Elk::SMS
     #
     #   Elk.configure do |config|
@@ -40,22 +48,6 @@ module Elk
     # Not thread safe
     def client
       @client ||= Client.new
-    end
-
-    def username
-      client.username
-    end
-
-    def username=(user)
-      client.username = user
-    end
-
-    def password
-      client.password
-    end
-
-    def password=(passwd)
-      client.password = passwd
     end
 
     # Base URL used for calling 46elks API
