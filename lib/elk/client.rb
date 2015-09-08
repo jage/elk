@@ -12,9 +12,9 @@ module Elk
     # Used to overrid Elk::BASE_DOMAIN (in tests)
     attr_accessor :base_domain
 
-    def initialize(username: nil, password: nil)
-      @username = username
-      @password = password
+    def initialize(parameters = {})
+      @username = parameters[:username]
+      @password = parameters[:password]
     end
 
     # Set authentication credentials
