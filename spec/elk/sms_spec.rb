@@ -152,17 +152,17 @@ describe Elk::SMS do
     context "with invalid number" do
       before(:each) do
         stub_request(:post, url).
-          with(body: {:from => "+46761042247", :message => "Your order #171 has now been sent!", :to => "monkey"},
-               headers: post_headers).
+          with(body: { from: from, message: message, to: to }, headers: post_headers).
           to_return(fixture('invalid_to_number.txt'))
       end
 
+      let(:from) { "+46761042247" }
+      let(:to)   { "monkey" }
+
       it 'should handle invalid to number' do
         expect {
-          described_class.send(:from => '+46761042247',
-            :to => 'monkey',
-            :message => 'Your order #171 has now been sent!')
-        }.to raise_error(Elk::BadRequest, 'Invalid to number')
+          described_class.send(from: from, to: to, message: message)
+        }.to raise_error(Elk::BadRequest, "Invalid to number")
       end
     end
 
