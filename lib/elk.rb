@@ -12,7 +12,19 @@ module Elk
     extend Forwardable
 
     # Delegate methods to client
-    %i(username username= password password= base_domain base_url get post execute).each do |method|
+    delegated_methods = [
+      :username,
+      :username=,
+      :password,
+      :password=,
+      :base_domain,
+      :base_url,
+      :get,
+      :post,
+      :execute,
+    ]
+
+    delegated_methods.each do |method|
       def_delegator :client, method
     end
 
