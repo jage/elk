@@ -14,7 +14,6 @@ module Elk
   API_VERSION = "a1"
 
   class << self
-
     extend Forwardable
 
     # Delegate methods to client
@@ -35,13 +34,6 @@ module Elk
     # Not thread safe
     def client
       @client ||= Client.new
-    end
-
-    # Wrapper around MultiJson.load, symbolize names
-    def parse_json(body)
-      MultiJson.load(body, :symbolize_keys => true)
-    rescue MultiJson::DecodeError
-      raise BadResponse, "Can't parse JSON"
     end
   end
 end

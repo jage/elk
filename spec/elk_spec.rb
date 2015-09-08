@@ -67,22 +67,4 @@ describe Elk do
       end
     end
   end
-
-  describe ".parse_json" do
-    context "with empty object body" do
-      let(:body) { "{}" }
-
-      it "should return empty hash" do
-        expect(Elk.parse_json(body)).to eq({})
-      end
-    end
-
-    context "with garbage json" do
-      let(:body) { fixture("bad_response_body.txt").read }
-
-      it "should raise bad response exception" do
-        expect { Elk.parse_json(body) }.to raise_error(Elk::BadResponse)
-      end
-    end
-  end
 end

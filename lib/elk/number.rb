@@ -34,7 +34,7 @@ module Elk
     # Reloads a number from the API server
     def reload
       response = Elk.get("/Numbers/#{self.number_id}")
-      self.set_paramaters(Elk.parse_json(response.body))
+      self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
@@ -56,7 +56,7 @@ module Elk
     # Deallocates a number, once allocated, a number cannot be used again, ever!
     def deallocate!
       response = Elk.post("/Numbers/#{self.number_id}", { active: "no" })
-      self.set_paramaters(Elk.parse_json(response.body))
+      self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
@@ -71,14 +71,14 @@ module Elk
         verify_parameters(parameters, [:country])
         arguments = parameters.dup
         response = Elk.post('/Numbers', arguments)
-        self.new(Elk.parse_json(response.body))
+        self.new(Elk::Util.parse_json(response.body))
       end
 
       # Returns all Elk::Numbers, regardless of status (allocated/deallocated)
       def all
         response = Elk.get('/Numbers')
 
-        numbers = Elk.parse_json(response.body).fetch(:data)
+        numbers = Elk::Util.parse_json(response.body).fetch(:data)
         numbers.collect do |number|
           self.new(number)
         end

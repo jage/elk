@@ -22,7 +22,7 @@ module Elk
     # Reloads a SMS from server
     def reload
       response = Elk.get("/SMS/#{self.message_id}")
-      self.set_parameters(Elk.parse_json(response.body))
+      self.set_parameters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
@@ -55,7 +55,7 @@ module Elk
         check_sender_limit(arguments[:from])
 
         response = Elk.post("/SMS", arguments)
-        parsed_response = Elk.parse_json(response.body)
+        parsed_response = Elk::Util.parse_json(response.body)
 
         if multiple_recipients?(arguments[:to])
           instantiate_multiple(parsed_response)
@@ -67,7 +67,7 @@ module Elk
       # Get outgoing and incomming messages. Limited by the API to 100 latest
       def all
         response = Elk.get("/SMS")
-        messages = Elk.parse_json(response.body).fetch(:data)
+        messages = Elk::Util.parse_json(response.body).fetch(:data)
         instantiate_multiple(messages)
       end
 
