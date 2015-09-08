@@ -8,9 +8,9 @@ require 'time'
 # Used for to configure username and password through Elk.configure
 module Elk
   # Base domain for 46elks API
-  BASE_DOMAIN = 'api.46elks.com'
+  BASE_DOMAIN = "api.46elks.com"
   # API version supported
-  API_VERSION = 'a1'
+  API_VERSION = "a1"
 
   # When the authentication can't be done
   class AuthError < RuntimeError; end
@@ -34,8 +34,8 @@ module Elk
     # Set up authentication credentials, has to be done before using Elk::Number and Elk::SMS
     #
     #   Elk.configure do |config|
-    #     config.username = 'USERNAME'
-    #     config.password = 'PASSWORD
+    #     config.username = "USERNAME"
+    #     config.password = "PASSWORD"
     #   end
     def configure
       yield self
@@ -65,15 +65,15 @@ module Elk
     # * Sets accept header to json
     # * Handles some exceptions
     #
-    def execute(method, path, parameters, headers={:accept => :json}, &block)
+    def execute(method, path, parameters, headers = { accept: :json }, &block)
       payload = {}.merge(parameters)
       url = base_url + path
 
       request_arguments = {
-        :method  => method,
-        :url     => url,
-        :payload => payload,
-        :headers => headers
+        method:  method,
+        url:     url,
+        payload: payload,
+        headers: headers
       }
 
       RestClient::Request.execute(request_arguments, &block)
@@ -95,7 +95,7 @@ module Elk
 end
 
 # Internal
-require 'elk/util'
-require 'elk/version'
-require 'elk/number'
-require 'elk/sms'
+require "elk/util"
+require "elk/version"
+require "elk/number"
+require "elk/sms"

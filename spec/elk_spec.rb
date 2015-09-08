@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'elk'
+require "spec_helper"
+require "elk"
 
 describe Elk do
   describe ".base_url" do
@@ -19,7 +19,7 @@ describe Elk do
         specify do
           Elk.configure do |config|
             config.username = nil
-            config.password = 'PASSWORD'
+            config.password = "PASSWORD"
           end
 
           expect { Elk.base_url }.to raise_error(Elk::AuthError)
@@ -29,7 +29,7 @@ describe Elk do
       context "when password is missing" do
         specify do
           Elk.configure do |config|
-            config.username = 'USERNAME'
+            config.username = "USERNAME"
             config.password = nil
           end
 
@@ -40,8 +40,8 @@ describe Elk do
       context "when all is configured" do
         specify do
           Elk.configure do |config|
-            config.username = 'USERNAME'
-            config.password = 'PASSWORD'
+            config.username = "USERNAME"
+            config.password = "PASSWORD"
           end
 
           expect { Elk.base_url }.not_to raise_error
@@ -60,7 +60,7 @@ describe Elk do
     end
 
     context "with garbage json" do
-      let(:body) { fixture('bad_response_body.txt').read }
+      let(:body) { fixture("bad_response_body.txt").read }
 
       it "should raise bad response exception" do
         expect { Elk.parse_json(body) }.to raise_error(Elk::BadResponse)

@@ -38,7 +38,7 @@ elk can be used to allocate a phone numbers, manage the numbers and send/recieve
 First thing when using elk is to set the authentication parameters
 
 ```Ruby
-require 'elk'
+require "elk"
 
 Elk.configure do |config|
   config.username = 'USERNAME'

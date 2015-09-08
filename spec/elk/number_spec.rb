@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'elk'
+require "spec_helper"
+require "elk"
 
 describe Elk::Number do
   before { configure_elk }

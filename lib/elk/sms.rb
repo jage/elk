@@ -45,16 +45,16 @@ module Elk
         arguments = parameters.dup
 
         recipient_numbers = Array(parameters[:to])
-        arguments[:to] = recipient_numbers.join(',')
+        arguments[:to] = recipient_numbers.join(",")
 
         if parameters[:flash]
           arguments.delete(:flash)
-          arguments[:flashsms] = 'yes'
+          arguments[:flashsms] = "yes"
         end
 
         check_sender_limit(arguments[:from])
 
-        response = Elk.post('/SMS', arguments)
+        response = Elk.post("/SMS", arguments)
         parsed_response = Elk.parse_json(response.body)
 
         if multiple_recipients?(arguments[:to])
@@ -72,12 +72,12 @@ module Elk
       end
 
       private
-      def instantiate_multiple(multiple)
-        multiple.collect { |n| self.new(n) }
+      def instantiate_multiple(messages)
+        messages.collect { |message| self.new(message) }
       end
 
       def multiple_recipients?(to)
-        to.split(',').length > 1
+        to.split(",").length > 1
       end
 
       # Warn if the from string will be capped by the sms gateway
