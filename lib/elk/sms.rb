@@ -1,3 +1,5 @@
+require "time"
+
 module Elk
   # Used to send SMS through 46elks SMS-gateway
   class SMS

@@ -1,3 +1,5 @@
+require "time"
+
 module Elk
   # Allocate and manage numbers used for SMS/MMS/Voice
   class Number

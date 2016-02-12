@@ -1,6 +1,3 @@
-# External
-require "rest_client"
-require "time"
 require "forwardable"
 
 # Base module
