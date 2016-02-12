@@ -73,7 +73,7 @@ module Elk
 
       private
       def instantiate_multiple(messages)
-        messages.collect { |message| self.new(message) }
+        messages.map { |message| self.new(message) }
       end
 
       def multiple_recipients?(to)

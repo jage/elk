@@ -15,7 +15,7 @@ module Elk
       @status       = parameters[:active]
       @number_id    = parameters[:id]
       @number       = parameters[:number]
-      @capabilities = parameters[:capabilities].collect(&:to_sym)
+      @capabilities = parameters[:capabilities].map(&:to_sym)
       @loaded_at    = Time.now
     end
 
@@ -79,7 +79,7 @@ module Elk
         response = Elk.get('/Numbers')
 
         numbers = Elk::Util.parse_json(response.body).fetch(:data)
-        numbers.collect do |number|
+        numbers.map do |number|
           self.new(number)
         end
       end
