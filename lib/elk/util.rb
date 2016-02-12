@@ -1,3 +1,5 @@
+require "json"
+
 module Elk
   module Util
     def verify_parameters(parameters, required_parameters)
@@ -10,8 +12,8 @@ module Elk
 
     # Wrapper around MultiJson.load, symbolize names
     def self.parse_json(body)
-      MultiJson.load(body, :symbolize_keys => true)
-    rescue MultiJson::DecodeError
+      JSON.parse(body, :symbolize_names => true)
+    rescue JSON::ParserError
       raise BadResponse, "Can't parse JSON"
     end
   end

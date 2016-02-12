@@ -1,5 +1,4 @@
 # External
-require "multi_json"
 require "open-uri"
 require "rest_client"
 require "time"
