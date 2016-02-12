@@ -1,5 +1,4 @@
 # External
-require "open-uri"
 require "rest_client"
 require "time"
 require "forwardable"
