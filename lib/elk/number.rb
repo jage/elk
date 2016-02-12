@@ -3,7 +3,7 @@ require "time"
 module Elk
   # Allocate and manage numbers used for SMS/MMS/Voice
   class Number
-    attr_reader :number_id, :number, :capabilities, :loaded_at #:nodoc:
+    attr_reader :number_id, :number, :capabilities, :loaded_at, :client #:nodoc:
     attr_accessor :country, :sms_url, :voice_start_url #:nodoc:
 
     def initialize(parameters) #:nodoc:
@@ -17,8 +17,9 @@ module Elk
       @status       = parameters[:active]
       @number_id    = parameters[:id]
       @number       = parameters[:number]
-      @capabilities = parameters[:capabilities].map(&:to_sym)
+      @capabilities = Array(parameters[:capabilities]).map(&:to_sym)
       @loaded_at    = Time.now
+      @client       = parameters.fetch(:client) { Elk.client }
     end
 
     # Status of a number, if it's :active or :deallocated
@@ -35,7 +36,7 @@ module Elk
 
     # Reloads a number from the API server
     def reload
-      response = Elk.get("/Numbers/#{self.number_id}")
+      response = @client.get("/Numbers/#{self.number_id}")
       self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
@@ -51,13 +52,13 @@ module Elk
       unless self.number_id
         attributes[:country] = self.country
       end
-      response = Elk.post("/Numbers/#{self.number_id}", attributes)
+      response = @client.post("/Numbers/#{self.number_id}", attributes)
       response.code == 200
     end
 
     # Deallocates a number, once allocated, a number cannot be used again, ever!
     def deallocate!
-      response = Elk.post("/Numbers/#{self.number_id}", { active: "no" })
+      response = @client.post("/Numbers/#{self.number_id}", { active: "no" })
       self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
@@ -68,20 +69,31 @@ module Elk
       # Allocates a phone number
       #
       # * Required parameters: :country
-      # * Optional parameters: :sms_url, :voice_start_url
+      # * Optional parameters: :sms_url, :voice_start_url, :client
       def allocate(parameters)
         verify_parameters(parameters, [:country])
         arguments = parameters.dup
-        response = Elk.post('/Numbers', arguments)
+
+        client = parameters.fetch(:client) { Elk.client }
+
+        response = client.post('/Numbers', arguments)
         self.new(Elk::Util.parse_json(response.body))
       end
 
       # Returns all Elk::Numbers, regardless of status (allocated/deallocated)
-      def all
-        response = Elk.get('/Numbers')
+      #
+      # Optional parameters
+      #
+      # * :client - Elk::Client instance
+      #
+      def all(parameters = {})
+        client = parameters.fetch(:client) { Elk.client }
+
+        response = client.get('/Numbers')
 
         numbers = Elk::Util.parse_json(response.body).fetch(:data)
         numbers.map do |number|
+          number[:client] = client
           self.new(number)
         end
       end
