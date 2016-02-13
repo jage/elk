@@ -46,6 +46,25 @@ Elk.configure do |config|
 end
 ```
 
+It is possible to avoid the singleton configuration:
+
+```Ruby
+require "elk"
+
+client = Elk::Client.configure do |config|
+  config.username = "USERNAME"
+  config.password = "PASSWORD"
+end
+
+# Then pass client to the class methods
+numbers = Elk::Number.all(client: client)
+# => [#<Elk::Number ...>, #<Elk::Number ...>]
+
+
+Elk::SMS.send(client: client, from: "MyService", to: "+46704508449", message: "Your order #171 has now been sent!")
+# => #<Elk::SMS:0x0000010179d7e8 @client=... @from="MyService", @to="+46704508449", @message="Your order #171 has now been sent!", @message_id="sdc39a7926d37159b6985283e32f43251", @created_at=2011-07-17 16:21:13 +0200, @loaded_at=2011-07-17 16:21:13 +0200>
+```
+
 ### Numbers
 
 To be able to send and recieve messages, a number is needed. Several numbers can be allocated.
