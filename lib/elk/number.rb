@@ -1,7 +1,9 @@
+require "time"
+
 module Elk
   # Allocate and manage numbers used for SMS/MMS/Voice
   class Number
-    attr_reader :number_id, :number, :capabilities, :loaded_at #:nodoc:
+    attr_reader :number_id, :number, :capabilities, :loaded_at, :client #:nodoc:
     attr_accessor :country, :sms_url, :voice_start_url #:nodoc:
 
     def initialize(parameters) #:nodoc:
@@ -15,16 +17,17 @@ module Elk
       @status       = parameters[:active]
       @number_id    = parameters[:id]
       @number       = parameters[:number]
-      @capabilities = parameters[:capabilities].collect {|c| c.to_sym }
+      @capabilities = Array(parameters[:capabilities]).map(&:to_sym)
       @loaded_at    = Time.now
+      @client       = parameters.fetch(:client) { Elk.client }
     end
 
     # Status of a number, if it's :active or :deallocated
     def status
       case @status
-      when 'yes'
+      when "yes"
         :active
-      when 'no'
+      when "no"
         :deallocated
       else
         nil
@@ -33,30 +36,30 @@ module Elk
 
     # Reloads a number from the API server
     def reload
-      response = Elk.get("/Numbers/#{self.number_id}")
-      self.set_paramaters(Elk.parse_json(response.body))
+      response = @client.get("/Numbers/#{self.number_id}")
+      self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
     # Updates or allocates a number
     def save
       attributes = {
-        :sms_url     => self.sms_url,
-        :voice_start => self.voice_start_url
+        sms_url:     self.sms_url,
+        voice_start: self.voice_start_url
       }
 
       # If new URL, send country, otherwise not
       unless self.number_id
         attributes[:country] = self.country
       end
-      response = Elk.post("/Numbers/#{self.number_id}", attributes)
+      response = @client.post("/Numbers/#{self.number_id}", attributes)
       response.code == 200
     end
 
     # Deallocates a number, once allocated, a number cannot be used again, ever!
     def deallocate!
-      response = Elk.post("/Numbers/#{self.number_id}", { :active => 'no' })
-      self.set_paramaters(Elk.parse_json(response.body))
+      response = @client.post("/Numbers/#{self.number_id}", { active: "no" })
+      self.set_paramaters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
@@ -66,20 +69,36 @@ module Elk
       # Allocates a phone number
       #
       # * Required parameters: :country
-      # * Optional parameters: :sms_url, :voice_start_url
+      # * Optional parameters: :sms_url, :voice_start_url, :client
       def allocate(parameters)
         verify_parameters(parameters, [:country])
-        arguments = parameters.dup
-        response = Elk.post('/Numbers', arguments)
-        self.new(Elk.parse_json(response.body))
+
+        client = parameters.fetch(:client) { Elk.client }
+
+        allowed_arguments = [:country, :sms_url, :voice_start_url]
+        arguments = parameters.dup.select do |key, _|
+          allowed_arguments.include?(key)
+        end
+
+        response = client.post('/Numbers', arguments)
+        self.new(Elk::Util.parse_json(response.body))
       end
 
       # Returns all Elk::Numbers, regardless of status (allocated/deallocated)
-      def all
-        response = Elk.get('/Numbers')
+      #
+      # Optional parameters
+      #
+      # * :client - Elk::Client instance
+      #
+      def all(parameters = {})
+        client = parameters.fetch(:client) { Elk.client }
 
-        Elk.parse_json(response.body)[:data].collect do |n|
-          self.new(n)
+        response = client.get('/Numbers')
+
+        numbers = Elk::Util.parse_json(response.body).fetch(:data)
+        numbers.map do |number|
+          number[:client] = client
+          self.new(number)
         end
       end
     end

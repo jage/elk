@@ -1,8 +1,10 @@
+require "time"
+
 module Elk
   # Used to send SMS through 46elks SMS-gateway
   class SMS
     attr_reader :from, :to, :message, :message_id, :created_at,
-                :loaded_at, :direction, :status #:nodoc:
+                :loaded_at, :direction, :status, :client #:nodoc:
 
     def initialize(parameters) #:nodoc:
       set_parameters(parameters)
@@ -17,12 +19,13 @@ module Elk
       @loaded_at  = Time.now
       @direction  = parameters[:direction]
       @status     = parameters[:status]
+      @client     = parameters.fetch(:client) { Elk.client }
     end
 
     # Reloads a SMS from server
     def reload
-      response = Elk.get("/SMS/#{self.message_id}")
-      self.set_parameters(Elk.parse_json(response.body))
+      response = @client.get("/SMS/#{self.message_id}")
+      self.set_parameters(Elk::Util.parse_json(response.body))
       response.code == 200
     end
 
@@ -38,45 +41,60 @@ module Elk
       #
       # Optional parameters
       # * :flash - if set to non-false value SMS is sent as a "Flash SMS"
+      # * :client - `Elk::Client` instance
+      # * :whendelivered - Callback URL that will receive a POST after delivery
       #
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
-        arguments = parameters.dup
+        client = parameters.fetch(:client) { Elk.client }
 
-        recipient_numbers = Array(parameters[:to])
-        arguments[:to] = recipient_numbers.join(',')
+        arguments = {}
+        arguments[:from]     = parameters.fetch(:from)
+        arguments[:to]       = Array(parameters.fetch(:to)).join(",")
+        arguments[:message]  = parameters.fetch(:message)
+        
+        if parameters.fetch(:flash) { false }
+          arguments[:flashsms] = "yes"
+        end
 
-        if parameters[:flash]
-          arguments.delete(:flash)
-          arguments[:flashsms] = 'yes'
+        if parameters.key?(:whendelivered)
+          arguments[:whendelivered] = parameters.fetch(:whendelivered)
         end
 
         check_sender_limit(arguments[:from])
 
-        response = Elk.post('/SMS', arguments)
-        parsed_response = Elk.parse_json(response.body)
+        response = client.post("/SMS", arguments)
+        parsed_response = Elk::Util.parse_json(response.body)
 
         if multiple_recipients?(arguments[:to])
+          parsed_response.each { |m| m[:client] = client }
           instantiate_multiple(parsed_response)
         else
+          parsed_response[:client] = client
           self.new(parsed_response)
         end
       end
 
       # Get outgoing and incomming messages. Limited by the API to 100 latest
-      def all
-        response = Elk.get('/SMS')
-        instantiate_multiple(Elk.parse_json(response.body)[:data])
+      #
+      # Optional parameters
+      # * :client - Elk::Client instance
+      #
+      def all(parameters = {})
+        client = parameters.fetch(:client) { Elk.client }
+        response = client.get("/SMS")
+        messages = Elk::Util.parse_json(response.body).fetch(:data).each { |m| m[:client] = client }
+        instantiate_multiple(messages)
       end
 
       private
-      def instantiate_multiple(multiple)
-        multiple.collect { |n| self.new(n) }
+      def instantiate_multiple(messages)
+        messages.map { |message| self.new(message) }
       end
 
       def multiple_recipients?(to)
-        to.split(',').length > 1
+        to.split(",").length > 1
       end
 
       # Warn if the from string will be capped by the sms gateway
