@@ -23,6 +23,34 @@ describe Elk::Number do
     end
   end
 
+  describe "#status" do
+    subject(:status) { described_class.new(active: active).status }
+
+    context "with an active number" do
+      let(:active) { "yes" }
+
+      it { is_expected.to eq(:active) }
+    end
+
+    context "with an deallocated number" do
+      let(:active) { "no" }
+
+      it { is_expected.to eq(:deallocated) }
+    end
+
+    context "without any status" do
+      let(:active) { }
+
+      it { is_expected.to eq(nil) }
+    end
+
+    context "with an unknown status" do
+      let(:active) { "bananas" }
+
+      it { is_expected.to eq(nil) }
+    end
+  end
+
   describe ".allocate" do
     let(:allocate_response) { double("Response", body: JSON.dump({}) ) }
 
