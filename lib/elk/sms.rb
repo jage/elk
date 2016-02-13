@@ -42,6 +42,7 @@ module Elk
       # Optional parameters
       # * :flash - if set to non-false value SMS is sent as a "Flash SMS"
       # * :client - `Elk::Client` instance
+      # * :whendelivered - Callback URL that will receive a POST after delivery
       #
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
@@ -52,7 +53,14 @@ module Elk
         arguments[:from]     = parameters.fetch(:from)
         arguments[:to]       = Array(parameters.fetch(:to)).join(",")
         arguments[:message]  = parameters.fetch(:message)
-        arguments[:flashsms] = "yes" if parameters.fetch(:flash) { false }
+        
+        if parameters.fetch(:flash) { false }
+          arguments[:flashsms] = "yes"
+        end
+
+        if parameters.key?(:whendelivered)
+          arguments[:whendelivered] = parameters.fetch(:whendelivered)
+        end
 
         check_sender_limit(arguments[:from])
 
