@@ -51,7 +51,8 @@ It is possible to avoid the singleton configuration:
 ```Ruby
 require "elk"
 
-client = Elk::Client.configure do |config|
+client = Elk::Client.new
+client.configure do |config|
   config.username = "USERNAME"
   config.password = "PASSWORD"
 end
