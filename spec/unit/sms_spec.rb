@@ -28,14 +28,16 @@ describe Elk::SMS do
 
     context "when passing a client" do
       it "should use the passed in client" do
-        expect(client).to receive(:post) { sms_response }
+        expect(client).to receive(:post)
+          .with("/SMS", from: "", to: "", message: "") { sms_response }
         described_class.send(client: client, from: "", to: "", message: "")
       end
     end
 
     context "without passing a client" do
       it "should instantiate a client" do
-        expect_any_instance_of(Elk::Client).to receive(:post) { sms_response }
+        expect_any_instance_of(Elk::Client).to receive(:post)
+          .with("/SMS", from: "", to: "", message: "") { sms_response }
         described_class.send(from: "", to: "", message: "")
       end
     end
@@ -47,14 +49,16 @@ describe Elk::SMS do
 
     context "when passing a client" do
       it "should use the passed in client" do
-        expect(client).to receive(:get) { all_response }
+        expect(client).to receive(:get)
+          .with("/SMS") { all_response }
         described_class.all(client: client)
       end
     end
 
     context "without passing a client" do
       it "should instantiate a client" do
-        expect_any_instance_of(Elk::Client).to receive(:get) { all_response }
+        expect_any_instance_of(Elk::Client).to receive(:get)
+          .with("/SMS") { all_response }
         described_class.all
       end
     end

@@ -46,17 +46,13 @@ module Elk
       def send(parameters)
         verify_parameters(parameters, [:from, :message, :to])
 
-        arguments = parameters.dup
-
         client = parameters.fetch(:client) { Elk.client }
 
-        recipient_numbers = Array(parameters[:to])
-        arguments[:to] = recipient_numbers.join(",")
-
-        if parameters[:flash]
-          arguments.delete(:flash)
-          arguments[:flashsms] = "yes"
-        end
+        arguments = {}
+        arguments[:from]     = parameters.fetch(:from)
+        arguments[:to]       = Array(parameters.fetch(:to)).join(",")
+        arguments[:message]  = parameters.fetch(:message)
+        arguments[:flashsms] = "yes" if parameters.fetch(:flash) { false }
 
         check_sender_limit(arguments[:from])
 

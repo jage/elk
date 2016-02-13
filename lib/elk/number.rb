@@ -72,9 +72,13 @@ module Elk
       # * Optional parameters: :sms_url, :voice_start_url, :client
       def allocate(parameters)
         verify_parameters(parameters, [:country])
-        arguments = parameters.dup
 
         client = parameters.fetch(:client) { Elk.client }
+
+        allowed_arguments = [:country, :sms_url, :voice_start_url]
+        arguments = parameters.dup.select do |key, _|
+          allowed_arguments.include?(key)
+        end
 
         response = client.post('/Numbers', arguments)
         self.new(Elk::Util.parse_json(response.body))

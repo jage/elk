@@ -56,14 +56,16 @@ describe Elk::Number do
 
     context "when passing a client" do
       it "should use the passed in client" do
-        expect(client).to receive(:post) { allocate_response }
+        expect(client).to receive(:post)
+          .with("/Numbers", country: "no") { allocate_response }
         described_class.allocate(client: client, country: "no")
       end
     end
 
     context "without passing a client" do
       it "should instantiate a client" do
-        expect_any_instance_of(Elk::Client).to receive(:post) { allocate_response }
+        expect_any_instance_of(Elk::Client).to receive(:post)
+          .with("/Numbers", country: "no") { allocate_response }
         described_class.allocate(country: "no")
       end
     end
@@ -74,14 +76,16 @@ describe Elk::Number do
 
     context "when passing a client" do
       it "should use the passed in client" do
-        expect(client).to receive(:get) { all_response }
+        expect(client).to receive(:get)
+          .with("/Numbers") { all_response }
         described_class.all(client: client)
       end
     end
 
     context "without passing a client" do
       it "should instantiate a client" do
-        expect_any_instance_of(Elk::Client).to receive(:get) { all_response }
+        expect_any_instance_of(Elk::Client).to receive(:get)
+          .with("/Numbers") { all_response }
         described_class.all
       end
     end
