@@ -31,7 +31,7 @@ Test specs with:
 
 ## Usage
 
-elk can be used to allocate a phone numbers, manage the numbers and send/recieve messages through these numbers.
+elk can be used to allocate phone numbers, manage the numbers and send/receive messages through these numbers.
 
 ### Authentication and configuration
 
