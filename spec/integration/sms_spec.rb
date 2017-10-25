@@ -3,7 +3,11 @@ require "elk"
 
 describe Elk::SMS do
   before { configure_elk }
-  let(:url) { "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS" }
+
+  let(:username) { "USERNAME" }
+  let(:password) { "PASSWORD" }
+  let(:basic_auth) { [username, password] }
+  let(:url) { "https://api.46elks.com/a1/SMS" }
 
   describe ".send" do
     let(:from)    { "+46761042247" }
@@ -13,7 +17,7 @@ describe Elk::SMS do
     context "ordinary SMS" do
       before(:each) do
         stub_request(:post, url).
-          with(body: { from: from, message: message, to: to }, headers: post_headers).
+          with(body: { from: from, message: message, to: to }, headers: post_headers, basic_auth: basic_auth).
           to_return(fixture('sends_a_sms.txt'))
       end
 
@@ -53,7 +57,8 @@ describe Elk::SMS do
       before(:each) do
         @stub = stub_request(:post, url).
           with(body: { from: from, message: message, to: to, flashsms: "yes" },
-               headers: post_headers).
+               headers: post_headers,
+               basic_auth: basic_auth).
           to_return(fixture('sends_a_sms.txt'))
       end
 
@@ -78,7 +83,8 @@ describe Elk::SMS do
       before do
         stub_request(:post, url).
           with(body: { from: from, message: message, to: to.join(",") },
-               headers: post_headers).
+               headers: post_headers,
+               basic_auth: basic_auth).
           to_return(fixture('sends_a_sms_to_multiple_recipients.txt'))
       end
 
@@ -226,11 +232,11 @@ describe Elk::SMS do
   describe "#reload" do
     before(:each) do
       stub_request(:get, url).
-        with(headers: get_headers).
+        with(headers: get_headers, basic_auth: basic_auth).
         to_return(fixture('sms_history.txt'))
 
-      stub_request(:get, "https://USERNAME:PASSWORD@api.46elks.com/a1/SMS/s8952031bb83bf3e64f8e13b071c131c0").
-        with(headers: get_headers).
+      stub_request(:get, "https://api.46elks.com/a1/SMS/s8952031bb83bf3e64f8e13b071c131c0").
+        with(headers: get_headers, basic_auth: basic_auth).
         to_return(fixture('reloads_a_sms.txt'))
     end
 

@@ -1,11 +1,9 @@
 language: ruby
 sudo: false
 rvm:
-  - 1.9
   - 2.0
   - 2.1
   - 2.2
   - 2.3
   - 2.4
-  - jruby-19mode
-  - rbx-19mode
+  - jruby

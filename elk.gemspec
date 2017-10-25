@@ -20,15 +20,15 @@ spec = Gem::Specification.new do |s|
   s.has_rdoc = true
   s.extra_rdoc_files = ["README.MD", "MIT-LICENSE"]
 
-  s.required_ruby_version = ">= 1.9.3"
+  s.required_ruby_version = ">= 2.0.0"
 
   # elk dependencies
-  s.add_dependency("rest-client", "~> 1.6")
+  s.add_dependency("rest-client", "~> 2.0")
 
   # Tests
   s.add_development_dependency("rake", "~> 10.0")
   s.add_development_dependency("rspec", "~> 3.0")
-  s.add_development_dependency("webmock", "~> 1.0")
+  s.add_development_dependency("webmock", "~> 2.0")
 
   s.require_path = 'lib'
   s.files = %w(README.MD MIT-LICENSE) + Dir["{lib,spec}/**/*"]

@@ -3,7 +3,10 @@ require "elk"
 
 describe Elk::Number do
   before { configure_elk }
-  let(:url) { "https://USERNAME:PASSWORD@api.46elks.com/a1/Numbers" }
+  let(:username) { "USERNAME" }
+  let(:password) { "PASSWORD" }
+  let(:basic_auth) { [username, password] }
+  let(:url) { "https://api.46elks.com/a1/Numbers" }
 
   describe ".allocate" do
     context "swedish sms number" do
@@ -78,16 +81,17 @@ describe Elk::Number do
     end
 
     context "with wrong password" do
-      let(:url) { "https://USERNAME:WRONG@api.46elks.com/a1/Numbers" }
+      let(:url) { "https://api.46elks.com/a1/Numbers" }
+      let(:password) { "WRONG" }
 
       before(:each) do
         stub_request(:get, url).
-          with(headers: get_headers).
+          with(headers: get_headers, basic_auth: basic_auth).
           to_return(fixture('auth_error.txt'))
 
         Elk.configure do |config|
-          config.username = 'USERNAME'
-          config.password = 'WRONG'
+          config.username = username
+          config.password = password
         end
       end
 
@@ -116,12 +120,12 @@ describe Elk::Number do
   describe "#save" do
     before(:each) do
       stub_request(:get, url).
-        with(headers: get_headers).
+        with(headers: get_headers, basic_auth: basic_auth).
         to_return(fixture('gets_allocated_numbers.txt'))
 
       stub_request(:post, "#{url}/nea19c8e291676fb7003fa1d63bba7899").
-        with(body: {"sms_url" => "http://otherhost/receive", "voice_start" => ""},
-        headers: post_headers).
+        with(body: {"sms_url" => "http://otherhost/receive", "voice_start" => nil},
+        headers: post_headers, basic_auth: basic_auth).
         to_return(fixture('updates_a_number.txt'))
     end
 
