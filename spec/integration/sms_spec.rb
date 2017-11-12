@@ -57,10 +57,20 @@ describe Elk::SMS do
           to_return(fixture('sends_a_sms.txt'))
       end
 
-      it "should send flash SMS through API" do
-        described_class.send(from: from, to: to, message: message, flash: true)
+      context "with flash parameter" do
+        it "should send flash SMS through API" do
+          described_class.send(from: from, to: to, message: message, flash: true)
 
-        expect(@stub).to have_been_requested
+          expect(@stub).to have_been_requested
+        end
+      end
+
+      context "with flashsms parameter" do
+        it "should send flash SMS through API" do
+          described_class.send(from: from, to: to, message: message, flashsms: true)
+
+          expect(@stub).to have_been_requested
+        end
       end
     end
 

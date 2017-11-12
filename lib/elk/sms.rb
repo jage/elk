@@ -41,6 +41,7 @@ module Elk
       #
       # Optional parameters
       # * :flash - if set to non-false value SMS is sent as a "Flash SMS"
+      # * :flashsms - alias of :flash
       # * :client - `Elk::Client` instance
       # * :whendelivered - Callback URL that will receive a POST after delivery
       #
@@ -54,7 +55,7 @@ module Elk
         arguments[:to]       = Array(parameters.fetch(:to)).join(",")
         arguments[:message]  = parameters.fetch(:message)
         
-        if parameters.fetch(:flash) { false }
+        if parameters.values_at(:flash, :flashsms).any?
           arguments[:flashsms] = "yes"
         end
 
