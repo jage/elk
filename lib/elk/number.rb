@@ -56,7 +56,7 @@ module Elk
       response.code == 200
     end
 
-    # Deallocates a number, once allocated, a number cannot be used again, ever!
+    # Deallocates a number, once deallocated, a number cannot be used again, ever!
     def deallocate!
       response = @client.post("/Numbers/#{self.number_id}", { active: "no" })
       self.set_paramaters(Elk::Util.parse_json(response.body))
