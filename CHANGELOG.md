@@ -1,7 +1,26 @@
 # Change Log
 
+## [v0.6.0](https://github.com/jage/elk/tree/v0.6.0) (2018-05-20)
+[Full Changelog](https://github.com/jage/elk/compare/v0.5.1...v0.6.0)
+
+**Implemented enhancements:**
+
+- Ruby 2.3, 2.4 and 2.5 support [\#16](https://github.com/jage/elk/issues/16)
+
+**Fixed bugs:**
+
+- "undefined method" error with mime-types 3.1 / rest-client 1.6.7 [\#18](https://github.com/jage/elk/issues/18)
+
+**Closed issues:**
+
+- Changelog [\#10](https://github.com/jage/elk/issues/10)
+
 ## [v0.5.1](https://github.com/jage/elk/tree/v0.5.1) (2017-11-12)
 [Full Changelog](https://github.com/jage/elk/compare/v0.5.0...v0.5.1)
+
+**Implemented enhancements:**
+
+- Drop Ruby 1.9 support [\#17](https://github.com/jage/elk/issues/17)
 
 **Fixed bugs:**
 
