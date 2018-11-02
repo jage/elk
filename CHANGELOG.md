@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.6.1](https://github.com/jage/elk/tree/v0.6.1) (2018-11-02)
+[Full Changelog](https://github.com/jage/elk/compare/v0.6.0...v0.6.1)
+
+**Merged pull requests:**
+
+- Remove deprecated has\_rdoc= from gemspec [\#20](https://github.com/jage/elk/pull/20) ([henrik](https://github.com/henrik))
+
 ## [v0.6.0](https://github.com/jage/elk/tree/v0.6.0) (2018-05-20)
 [Full Changelog](https://github.com/jage/elk/compare/v0.5.1...v0.6.0)
 
