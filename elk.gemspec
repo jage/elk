@@ -17,7 +17,6 @@ spec = Gem::Specification.new do |s|
   s.license = 'MIT'
 
   s.platform = Gem::Platform::RUBY
-  s.has_rdoc = true
   s.extra_rdoc_files = ["README.MD", "MIT-LICENSE"]
 
   s.required_ruby_version = ">= 2.3.0"
