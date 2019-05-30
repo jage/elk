@@ -19,7 +19,7 @@ spec = Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.extra_rdoc_files = ["README.MD", "MIT-LICENSE"]
 
-  s.required_ruby_version = ">= 2.3.0"
+  s.required_ruby_version = ">= 2.4.0"
 
   # elk dependencies
   s.add_dependency("rest-client", "~> 2.0")
