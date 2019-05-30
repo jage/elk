@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Elk
   # When the authentication can't be done
   class AuthError < RuntimeError; end

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require "rest_client"
 
 module Elk
   class Client
     # Base domain for 46elks API
-    BASE_DOMAIN = "api.46elks.com"
+    BASE_DOMAIN = "api.46elks.com".freeze
     # API version supported
-    API_VERSION = "a1"
+    API_VERSION = "a1".freeze
 
     # API Username from 46elks.com
     attr_accessor :username
