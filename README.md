@@ -8,7 +8,7 @@ At the moment the API only supports sending SMS messages.
 
 ## Requirements
 
-* Modern Ruby: >= 2.3
+* Modern Ruby: >= 2.4
 * API account at 46elks.com
 
 ## Install
